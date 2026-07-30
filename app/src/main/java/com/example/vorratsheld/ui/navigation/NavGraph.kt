@@ -2,11 +2,15 @@ package com.example.vorratsheld.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.vorratsheld.ui.screens.auth.LoginScreen
 import com.example.vorratsheld.ui.screens.auth.RegisterScreen
+import com.example.vorratsheld.ui.screens.overview.OverviewScreen
+import com.example.vorratsheld.ui.screens.scan.ScanScreen
 
 @Composable
 fun VorratsheldNavGraph(
@@ -24,14 +28,27 @@ fun VorratsheldNavGraph(
             RegisterScreen(navController = navController)
         }
         composable(Screen.Overview.route) {
-            // TODO: OverviewScreen einbauen
+            OverviewScreen(navController = navController)
         }
         composable(Screen.Scan.route) {
-            // TODO: ScanScreen einbauen
+            ScanScreen(navController = navController)
         }
-        composable(Screen.ProductDetail.route) { backStackEntry ->
+        composable(
+            route = Screen.ProductDetail.route,
+            arguments = listOf(
+                navArgument("productId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument("barcode") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            // TODO: ProductDetailScreen einbauen, productId nutzen
+            val barcode = backStackEntry.arguments?.getString("barcode") ?: ""
+            // TODO: ProductDetailScreen einbauen, productId (Bearbeiten) bzw. barcode (Neu anlegen) nutzen
         }
         composable(Screen.ShoppingList.route) {
             // TODO: ShoppingListScreen einbauen

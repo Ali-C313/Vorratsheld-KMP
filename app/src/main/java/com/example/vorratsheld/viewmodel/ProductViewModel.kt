@@ -29,4 +29,12 @@ class ProductViewModel(
             loadProducts(userId)
         }
     }
+
+    // Schaltet den Favoriten-Status eines Produkts um (z. B. für die Einkaufsliste)
+    fun toggleFavorite(product: Product, userId: String) {
+        viewModelScope.launch {
+            productRepository.updateProduct(product.copy(isFavorite = !product.isFavorite))
+            loadProducts(userId)
+        }
+    }
 }
