@@ -43,6 +43,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.09.00"))
     implementation("androidx.activity:activity-compose:1.9.2")
     implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
     // Navigation
@@ -76,4 +77,7 @@ dependencies {
 
     // Bilder laden (Produktbilder von Open Food Facts)
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // Nur für Android Studio nötig, damit @Preview tatsächlich etwas rendert
+    debugImplementation("androidx.compose.ui:ui-tooling")
 }

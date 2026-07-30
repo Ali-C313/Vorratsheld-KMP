@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.vorratsheld.ui.screens.auth.LoginScreen
 import com.example.vorratsheld.ui.screens.auth.RegisterScreen
 import com.example.vorratsheld.ui.screens.overview.OverviewScreen
+import com.example.vorratsheld.ui.screens.productdetail.ProductDetailScreen
 import com.example.vorratsheld.ui.screens.scan.ScanScreen
 
 @Composable
@@ -48,7 +49,11 @@ fun VorratsheldNavGraph(
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
             val barcode = backStackEntry.arguments?.getString("barcode") ?: ""
-            // TODO: ProductDetailScreen einbauen, productId (Bearbeiten) bzw. barcode (Neu anlegen) nutzen
+            ProductDetailScreen(
+                navController = navController,
+                productId = productId,
+                barcode = barcode
+            )
         }
         composable(Screen.ShoppingList.route) {
             // TODO: ShoppingListScreen einbauen

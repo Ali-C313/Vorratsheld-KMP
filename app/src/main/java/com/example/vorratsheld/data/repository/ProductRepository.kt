@@ -19,6 +19,12 @@ class ProductRepository(
         return snapshot.documents.mapNotNull { it.toObject(Product::class.java) }
     }
 
+    // Lädt ein einzelnes Produkt anhand seiner ID (z. B. zum Bearbeiten im ProductDetailScreen)
+    suspend fun getProductById(productId: String): Product? {
+        val snapshot = productsCollection.document(productId).get().await()
+        return snapshot.toObject(Product::class.java)
+    }
+
     // Legt ein neues Produkt an (id wird von Firestore vergeben)
     suspend fun addProduct(product: Product) {
         val docRef = productsCollection.document()

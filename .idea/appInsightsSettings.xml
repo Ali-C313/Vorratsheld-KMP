@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.example.vorratsheld" />
-                  <option name="mobileSdkAppId" value="1:516909246785:android:1be870c23f2d10701819c0" />
-                  <option name="projectId" value="vorratsheld-fc695" />
-                  <option name="projectNumber" value="516909246785" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
