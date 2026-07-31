@@ -17,24 +17,40 @@ class ProductViewModel(
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
 
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
     fun loadProducts(userId: String) {
         viewModelScope.launch {
-            _products.value = productRepository.getProducts(userId)
+            try {
+                _products.value = productRepository.getProducts(userId)
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _errorMessage.value = e.message
+            }
         }
     }
 
     fun addProduct(product: Product, userId: String) {
         viewModelScope.launch {
-            productRepository.addProduct(product)
-            loadProducts(userId)
+            try {
+                productRepository.addProduct(product)
+                loadProducts(userId)
+            } catch (e: Exception) {
+                _errorMessage.value = e.message
+            }
         }
     }
 
     // Schaltet den Favoriten-Status eines Produkts um (z. B. für die Einkaufsliste)
     fun toggleFavorite(product: Product, userId: String) {
         viewModelScope.launch {
-            productRepository.updateProduct(product.copy(isFavorite = !product.isFavorite))
-            loadProducts(userId)
+            try {
+                productRepository.updateProduct(product.copy(isFavorite = !product.isFavorite))
+                loadProducts(userId)
+            } catch (e: Exception) {
+                _errorMessage.value = e.message
+            }
         }
     }
 }

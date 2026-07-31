@@ -12,6 +12,7 @@ import com.example.vorratsheld.ui.screens.auth.RegisterScreen
 import com.example.vorratsheld.ui.screens.overview.OverviewScreen
 import com.example.vorratsheld.ui.screens.productdetail.ProductDetailScreen
 import com.example.vorratsheld.ui.screens.scan.ScanScreen
+import com.example.vorratsheld.ui.screens.shoppinglist.ShoppingListScreen
 
 @Composable
 fun VorratsheldNavGraph(
@@ -56,7 +57,7 @@ fun VorratsheldNavGraph(
             )
         }
         composable(Screen.ShoppingList.route) {
-            // TODO: ShoppingListScreen einbauen
+            ShoppingListScreen(navController = navController)
         }
     }
 }

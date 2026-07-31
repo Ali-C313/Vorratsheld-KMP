@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -77,7 +78,7 @@ fun ProductDetailScreen(
                 viewModel.save(user.uid) { navController.popBackStack() }
             }
         },
-        onDeleteClick = {
+        onDeleteConfirmed = {
             viewModel.delete { navController.popBackStack() }
         }
     )
@@ -94,9 +95,10 @@ private fun ProductDetailContent(
     onFavoriteToggle: () -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteConfirmed: () -> Unit
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -109,7 +111,7 @@ private fun ProductDetailContent(
                 },
                 actions = {
                     if (uiState.isEditMode) {
-                        IconButton(onClick = onDeleteClick) {
+                        IconButton(onClick = { showDeleteConfirmation = true }) {
                             Icon(Icons.Filled.Delete, contentDescription = "Löschen")
                         }
                     }
@@ -211,6 +213,27 @@ private fun ProductDetailContent(
             DatePicker(state = datePickerState)
         }
     }
+
+    if (showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmation = false },
+            title = { Text("Produkt löschen?") },
+            text = { Text("\"${uiState.name}\" wird endgültig aus deinem Vorrat entfernt. Das kann nicht rückgängig gemacht werden.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDeleteConfirmation = false
+                    onDeleteConfirmed()
+                }) {
+                    Text("Löschen", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirmation = false }) {
+                    Text("Abbrechen")
+                }
+            }
+        )
+    }
 }
 
 private fun formatDate(dateMillis: Long): String {
@@ -235,7 +258,7 @@ private fun ProductDetailContentNewPreview() {
             onFavoriteToggle = {},
             onBackClick = {},
             onSaveClick = {},
-            onDeleteClick = {}
+            onDeleteConfirmed = {}
         )
     }
 }
@@ -258,7 +281,7 @@ private fun ProductDetailContentEditPreview() {
             onFavoriteToggle = {},
             onBackClick = {},
             onSaveClick = {},
-            onDeleteClick = {}
+            onDeleteConfirmed = {}
         )
     }
 }

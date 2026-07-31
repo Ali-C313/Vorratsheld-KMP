@@ -7,6 +7,8 @@
     <!-- Für den späteren Scan-Screen (CameraX + ML Kit) -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- Für Ablauf-Erinnerungen (ab Android 13 zur Laufzeit abgefragt) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"

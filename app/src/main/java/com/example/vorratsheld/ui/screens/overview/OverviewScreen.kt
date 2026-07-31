@@ -1,5 +1,10 @@
 package com.example.vorratsheld.ui.screens.overview
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
@@ -19,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -30,7 +38,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -40,7 +51,7 @@ import com.example.vorratsheld.ui.components.ProductCard
 import com.example.vorratsheld.ui.navigation.Screen
 import com.example.vorratsheld.viewmodel.AuthViewModel
 import com.example.vorratsheld.viewmodel.ProductViewModel
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.vorratsheld.worker.WorkScheduler
 
 // Stateful: holt Produkte + Nutzer vom ViewModel, kümmert sich um Navigation
 @Composable
@@ -51,14 +62,36 @@ fun OverviewScreen(
 ) {
     val currentUser by authViewModel.currentUser.collectAsStateWithLifecycle()
     val products by productViewModel.products.collectAsStateWithLifecycle()
+    val errorMessage by productViewModel.errorMessage.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
-    // Produkte laden, sobald der Nutzer bekannt ist
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { /* Ergebnis wird nicht extra behandelt: Ohne Erlaubnis zeigt WorkManager schlicht keine Notification */ }
+
+    // Produkte laden, Ablauf-Check einplanen und Notification-Berechtigung anfragen,
+    // sobald der Nutzer bekannt ist
     LaunchedEffect(currentUser) {
-        currentUser?.let { user -> productViewModel.loadProducts(user.uid) }
+        currentUser?.let { user ->
+            productViewModel.loadProducts(user.uid)
+            WorkScheduler.schedulePeriodicExpiryCheck(context)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val alreadyGranted = ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+
+                if (!alreadyGranted) {
+                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        }
     }
 
     OverviewContent(
         products = products,
+        errorMessage = errorMessage,
         onScanClick = { navController.navigate(Screen.Scan.route) },
         onShoppingListClick = { navController.navigate(Screen.ShoppingList.route) },
         onProductClick = { product ->
@@ -66,6 +99,13 @@ fun OverviewScreen(
         },
         onFavoriteToggle = { product ->
             currentUser?.let { user -> productViewModel.toggleFavorite(product, user.uid) }
+        },
+        onLogoutClick = {
+            authViewModel.logout()
+            navController.navigate(Screen.Login.route) {
+                // Kompletter Backstack weg, damit man nach Logout nicht per "Zurück" wieder reinkommt
+                popUpTo(0)
+            }
         }
     )
 }
@@ -75,12 +115,19 @@ fun OverviewScreen(
 @Composable
 private fun OverviewContent(
     products: List<Product>,
+    errorMessage: String?,
     onScanClick: () -> Unit,
     onShoppingListClick: () -> Unit,
     onProductClick: (Product) -> Unit,
-    onFavoriteToggle: (Product) -> Unit
+    onFavoriteToggle: (Product) -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     var selectedLocation by remember { mutableStateOf(StorageLocation.KUEHLSCHRANK) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let { snackbarHostState.showSnackbar(it) }
+    }
 
     val filteredProducts = products
         .filter { it.location == selectedLocation }
@@ -88,12 +135,20 @@ private fun OverviewContent(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Vorratsheld") })
+            TopAppBar(
+                title = { Text("Vorratsheld") },
+                actions = {
+                    IconButton(onClick = onLogoutClick) {
+                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Abmelden")
+                    }
+                }
+            )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(onClick = { /* bereits auf der Übersicht */ }) {
+                    IconButton(onClick = onShoppingListClick) {
                         Icon(Icons.Filled.ShoppingCart, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     }
                 },
@@ -179,10 +234,12 @@ private fun OverviewContentPreview() {
                     isFavorite = false
                 )
             ),
+            errorMessage = null,
             onScanClick = {},
             onShoppingListClick = {},
             onProductClick = {},
-            onFavoriteToggle = {}
+            onFavoriteToggle = {},
+            onLogoutClick = {}
         )
     }
 }
@@ -193,10 +250,12 @@ private fun OverviewContentEmptyPreview() {
     MaterialTheme {
         OverviewContent(
             products = emptyList(),
+            errorMessage = null,
             onScanClick = {},
             onShoppingListClick = {},
             onProductClick = {},
-            onFavoriteToggle = {}
+            onFavoriteToggle = {},
+            onLogoutClick = {}
         )
     }
 }
