@@ -11,6 +11,7 @@ import com.example.vorratsheld.ui.screens.auth.LoginScreen
 import com.example.vorratsheld.ui.screens.auth.RegisterScreen
 import com.example.vorratsheld.ui.screens.overview.OverviewScreen
 import com.example.vorratsheld.ui.screens.productdetail.ProductDetailScreen
+import com.example.vorratsheld.ui.screens.profile.ProfileScreen
 import com.example.vorratsheld.ui.screens.scan.ScanScreen
 import com.example.vorratsheld.ui.screens.shoppinglist.ShoppingListScreen
 
@@ -34,6 +35,9 @@ fun VorratsheldNavGraph(
         }
         composable(Screen.Scan.route) {
             ScanScreen(navController = navController)
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController = navController)
         }
         composable(
             route = Screen.ProductDetail.route,

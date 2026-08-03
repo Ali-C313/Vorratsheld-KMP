@@ -6,6 +6,7 @@ sealed class Screen(val route: String) {
     data object Register : Screen("register")
     data object Overview : Screen("overview")
     data object Scan : Screen("scan")
+    data object Profile : Screen("profile")
 
     // productId: zum Bearbeiten eines bestehenden Produkts
     // barcode: zum Anlegen eines neuen Produkts direkt nach dem Scan

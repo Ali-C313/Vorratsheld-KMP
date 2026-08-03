@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.onSuccess
 
 // Hält den Login-Zustand für die Login/Register-Screens
 class AuthViewModel(
@@ -39,6 +38,19 @@ class AuthViewModel(
             result.onSuccess { user ->
                 _currentUser.value = user
                 _errorMessage.value = null
+            }.onFailure { e ->
+                _errorMessage.value = e.message
+            }
+        }
+    }
+
+    // onSuccess wird nur bei erfolgreichem Wechsel aufgerufen (z. B. um ein "Erledigt"-Feedback zu zeigen)
+    fun changePassword(currentPassword: String, newPassword: String, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            val result = authRepository.changePassword(currentPassword, newPassword)
+            result.onSuccess {
+                _errorMessage.value = null
+                onSuccess()
             }.onFailure { e ->
                 _errorMessage.value = e.message
             }

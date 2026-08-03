@@ -100,6 +100,14 @@ private fun ProductDetailContent(
     var showDatePicker by remember { mutableStateOf(false) }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
+    // Bei einem neu gescannten Produkt direkt nach dem Ablaufdatum fragen,
+    // statt zu erwarten, dass der Nutzer von selbst auf den Button tippt
+    LaunchedEffect(uiState.isEditMode) {
+        if (!uiState.isEditMode) {
+            showDatePicker = true
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(

@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +43,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -52,6 +55,7 @@ import com.example.vorratsheld.ui.navigation.Screen
 import com.example.vorratsheld.viewmodel.AuthViewModel
 import com.example.vorratsheld.viewmodel.ProductViewModel
 import com.example.vorratsheld.worker.WorkScheduler
+import kotlinx.coroutines.launch
 
 // Stateful: holt Produkte + Nutzer vom ViewModel, kümmert sich um Navigation
 @Composable
@@ -73,7 +77,6 @@ fun OverviewScreen(
     // sobald der Nutzer bekannt ist
     LaunchedEffect(currentUser) {
         currentUser?.let { user ->
-            productViewModel.loadProducts(user.uid)
             WorkScheduler.schedulePeriodicExpiryCheck(context)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -89,6 +92,12 @@ fun OverviewScreen(
         }
     }
 
+    // Wichtig: läuft bei JEDEM Betreten der Übersicht neu (z. B. Rückkehr aus ProductDetail),
+    // nicht nur beim ersten Erscheinen – sonst zeigt die Liste nach dem Speichern noch alte Daten
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        currentUser?.let { user -> productViewModel.loadProducts(user.uid) }
+    }
+
     OverviewContent(
         products = products,
         errorMessage = errorMessage,
@@ -100,13 +109,7 @@ fun OverviewScreen(
         onFavoriteToggle = { product ->
             currentUser?.let { user -> productViewModel.toggleFavorite(product, user.uid) }
         },
-        onLogoutClick = {
-            authViewModel.logout()
-            navController.navigate(Screen.Login.route) {
-                // Kompletter Backstack weg, damit man nach Logout nicht per "Zurück" wieder reinkommt
-                popUpTo(0)
-            }
-        }
+        onProfileClick = { navController.navigate(Screen.Profile.route) }
     )
 }
 
@@ -120,10 +123,11 @@ private fun OverviewContent(
     onShoppingListClick: () -> Unit,
     onProductClick: (Product) -> Unit,
     onFavoriteToggle: (Product) -> Unit,
-    onLogoutClick: () -> Unit
+    onProfileClick: () -> Unit
 ) {
     var selectedLocation by remember { mutableStateOf(StorageLocation.KUEHLSCHRANK) }
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(errorMessage) {
         errorMessage?.let { snackbarHostState.showSnackbar(it) }
@@ -138,8 +142,8 @@ private fun OverviewContent(
             TopAppBar(
                 title = { Text("Vorratsheld") },
                 actions = {
-                    IconButton(onClick = onLogoutClick) {
-                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Abmelden")
+                    IconButton(onClick = onProfileClick) {
+                        Icon(Icons.Filled.AccountCircle, contentDescription = "Profil")
                     }
                 }
             )
@@ -197,7 +201,12 @@ private fun OverviewContent(
                         ProductCard(
                             product = product,
                             onClick = { onProductClick(product) },
-                            onFavoriteToggle = { onFavoriteToggle(product) }
+                            onFavoriteToggle = {
+                                onFavoriteToggle(product)
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Favorit aktualisiert: ${product.name}")
+                                }
+                            }
                         )
                     }
                 }
@@ -239,7 +248,7 @@ private fun OverviewContentPreview() {
             onShoppingListClick = {},
             onProductClick = {},
             onFavoriteToggle = {},
-            onLogoutClick = {}
+            onProfileClick = {}
         )
     }
 }
@@ -255,7 +264,7 @@ private fun OverviewContentEmptyPreview() {
             onShoppingListClick = {},
             onProductClick = {},
             onFavoriteToggle = {},
-            onLogoutClick = {}
+            onProfileClick = {}
         )
     }
 }
