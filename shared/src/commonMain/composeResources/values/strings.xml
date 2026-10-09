@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Standardsprache: Deutsch (wird auch genommen, wenn eine Sprache fehlt) -->
+<resources>
+    <!-- Allgemein -->
+    <string name="app_name">Vorratsheld</string>
+    <string name="action_back">Zurück</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_add">Hinzufügen</string>
+    <string name="action_apply">Übernehmen</string>
+    <string name="storage_fridge">Kühlschrank</string>
+    <string name="storage_pantry">Kammer</string>
+    <string name="favorite">Favorit</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+
+    <!-- Login / Registrierung -->
+    <string name="login_title">Login</string>
+    <string name="login_button">Einloggen</string>
+    <string name="login_to_register">Noch kein Konto? Registrieren</string>
+    <string name="register_title">Registrieren</string>
+    <string name="register_button">Registrieren</string>
+    <string name="register_password_confirm">Passwort bestätigen</string>
+    <string name="register_to_login">Schon ein Konto? Zurück zum Login</string>
+    <string name="error_passwords_mismatch">Passwörter stimmen nicht überein</string>
+    <string name="error_password_too_short">Das Passwort muss mindestens 6 Zeichen haben</string>
+    <string name="error_login_failed">Login fehlgeschlagen</string>
+    <string name="error_register_failed">Registrierung fehlgeschlagen</string>
+    <string name="error_not_logged_in">Nicht eingeloggt</string>
+    <string name="error_no_email">Keine E-Mail-Adresse hinterlegt</string>
+
+    <!-- Übersicht -->
+    <string name="overview_settings">Einstellungen</string>
+    <string name="overview_scan">Scannen</string>
+    <string name="overview_shopping_list">Einkaufsliste</string>
+    <string name="overview_empty">Noch keine Produkte hier – scanne dein erstes Produkt!</string>
+    <string name="overview_favorite_updated">Favorit aktualisiert: %1$s</string>
+
+    <!-- Produktkarte -->
+    <string name="urgency_expired">Abgelaufen</string>
+    <string name="urgency_soon">Bald ablaufen</string>
+    <string name="urgency_short">Bald</string>
+    <string name="urgency_ok">OK</string>
+    <string name="expiry_expired_days">Seit %1$d Tag(en) abgelaufen</string>
+    <string name="expiry_today">Läuft heute ab</string>
+    <string name="expiry_tomorrow">Läuft morgen ab</string>
+    <string name="expiry_in_days">Läuft ab in %1$d Tagen</string>
+
+    <!-- Produktdetails -->
+    <string name="product_edit_title">Produkt bearbeiten</string>
+    <string name="product_new_title">Neues Produkt</string>
+    <string name="product_name">Produktname</string>
+    <string name="product_location">Lagerort</string>
+    <string name="product_expiry">Ablaufdatum</string>
+    <string name="product_favorite_hint">Favorit (landet bei Verbrauch automatisch auf der Einkaufsliste)</string>
+    <string name="product_delete_title">Produkt löschen?</string>
+    <string name="product_delete_text">„%1$s“ wird endgültig aus deinem Vorrat entfernt. Das kann nicht rückgängig gemacht werden.</string>
+    <string name="error_product_not_found">Produkt nicht gefunden</string>
+    <string name="error_save_failed">Speichern fehlgeschlagen: %1$s</string>
+    <string name="error_delete_failed">Löschen fehlgeschlagen: %1$s</string>
+
+    <!-- Einkaufsliste -->
+    <string name="shopping_title">Einkaufsliste</string>
+    <string name="shopping_empty">Schreib unten rein, was fehlt. Gelöschte Favoriten landen automatisch hier.</string>
+
+    <!-- Scanner -->
+    <string name="scan_no_permission">Ohne Kamera-Berechtigung kann kein Barcode gescannt werden.</string>
+    <string name="scan_allow_camera">Kamera erlauben</string>
+    <string name="scan_open_settings">Einstellungen öffnen</string>
+
+    <!-- Benachrichtigungen -->
+    <string name="notification_channel_name">Ablauf-Erinnerungen</string>
+    <string name="notification_channel_description">Erinnert dich, wenn Produkte in deinem Vorrat bald ablaufen</string>
+    <string name="notification_one_expiring">1 Produkt läuft bald ab</string>
+    <string name="notification_many_expiring">%1$d Produkte laufen bald ab</string>
+    <string name="reminder_title">Läuft bald ab</string>
+    <string name="reminder_body">%1$s läuft in 3 Tagen ab</string>
+
+    <!-- Einstellungen -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_profile_incomplete">Profil vervollständigen</string>
+    <string name="settings_section_app">App</string>
+    <string name="settings_language">Sprache</string>
+    <string name="settings_section_support">Hilfe &amp; Rechtliches</string>
+    <string name="settings_help">Hilfe &amp; Support</string>
+    <string name="settings_terms">AGB</string>
+    <string name="settings_privacy">Datenschutzerklärung</string>
+    <string name="settings_imprint">Impressum</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_logout">Abmelden</string>
+    <string name="logout_dialog_title">Abmelden?</string>
+    <string name="logout_dialog_text">Du wirst ausgeloggt und zum Login-Screen zurückgebracht.</string>
+
+    <!-- Profil bearbeiten -->
+    <string name="profile_title">Profil bearbeiten</string>
+    <string name="profile_change_photo">Foto ändern</string>
+    <string name="profile_remove_photo">Foto entfernen</string>
+    <string name="profile_first_name">Vorname</string>
+    <string name="profile_last_name">Nachname</string>
+    <string name="profile_email_hint">Bei einer neuen E-Mail-Adresse schicken wir dir einen Bestätigungslink. Erst danach wird sie geändert.</string>
+    <string name="profile_current_password">Aktuelles Passwort</string>
+    <string name="profile_current_password_hint">Nur nötig, wenn du deine E-Mail-Adresse änderst</string>
+    <string name="profile_saved">Profil gespeichert</string>
+    <string name="profile_email_verification_sent">Bestätigungslink an %1$s geschickt</string>
+    <string name="profile_section_password">Passwort ändern</string>
+    <string name="profile_new_password">Neues Passwort</string>
+    <string name="profile_new_password_confirm">Neues Passwort bestätigen</string>
+    <string name="profile_password_changed">Passwort geändert</string>
+    <string name="profile_change_password_button">Passwort ändern</string>
+    <string name="profile_delete_account">Konto löschen</string>
+    <string name="delete_account_title">Konto löschen?</string>
+    <string name="delete_account_text">Dein Konto, dein Profil und alle Produkte werden endgültig gelöscht. Bitte gib zur Bestätigung dein Passwort ein.</string>
+    <string name="error_password_required">Bitte gib dein aktuelles Passwort ein</string>
+    <string name="error_photo_failed">Das Foto konnte nicht geladen werden</string>
+
+    <!-- Sprache -->
+    <string name="language_title">Sprache</string>
+    <string name="language_system">Systemsprache</string>
+
+    <!-- Hilfe -->
+    <string name="help_title">Hilfe &amp; Support</string>
+    <string name="help_intro">Hast du ein Problem, einen Verbesserungsvorschlag oder eine Frage? Schreib uns – wir melden uns per E-Mail bei dir.</string>
+    <string name="help_category">Worum geht es?</string>
+    <string name="help_category_problem">Problem / Fehler</string>
+    <string name="help_category_feature">Verbesserungsvorschlag</string>
+    <string name="help_category_question">Allgemeine Frage</string>
+    <string name="help_subject">Betreff</string>
+    <string name="help_message">Nachricht</string>
+    <string name="help_reply_email">Antwort an (E-Mail)</string>
+    <string name="help_send">Absenden</string>
+    <string name="help_sent">Danke! Deine Nachricht wurde gesendet.</string>
+    <string name="help_error_empty">Bitte fülle Betreff und Nachricht aus.</string>
+    <string name="help_error_send">Senden fehlgeschlagen: %1$s</string>
+
+    <!-- Ladescreen, Onboarding, neues Design -->
+    <string name="login_subtitle">Willkommen zurück! Melde dich an, um deinen Vorrat zu sehen.</string>
+    <string name="register_subtitle">Leg dein Konto an – in einer Minute bist du startklar.</string>
+    <string name="password_show">Passwort anzeigen</string>
+    <string name="password_hide">Passwort verbergen</string>
+    <string name="error_name_required">Bitte gib Vor- und Nachnamen ein</string>
+    <string name="splash_tagline">Nichts mehr wegwerfen.</string>
+    <string name="onboarding_skip">Überspringen</string>
+    <string name="onboarding_next">Weiter</string>
+    <string name="onboarding_start">Los geht’s</string>
+    <string name="onboarding_1_title">Scannen statt tippen</string>
+    <string name="onboarding_1_text">Halte die Kamera auf den Barcode – Name und Bild holen wir automatisch.</string>
+    <string name="onboarding_2_title">Alles im Blick</string>
+    <string name="onboarding_2_text">Kühlschrank und Kammer übersichtlich, sortiert nach Ablaufdatum – mit Farben, die sofort zeigen, was eilt.</string>
+    <string name="onboarding_3_title">Rechtzeitig erinnert</string>
+    <string name="onboarding_3_text">Wir melden uns, bevor etwas abläuft. So landet weniger im Müll.</string>
+    <string name="onboarding_4_title">Einkaufen leicht gemacht</string>
+    <string name="onboarding_4_text">Markiere Lieblingsprodukte mit einem Stern – sie landen direkt auf deiner Einkaufsliste.</string>
+    <string name="overview_greeting">Hallo, %1$s!</string>
+    <string name="overview_greeting_anonymous">Hallo!</string>
+    <string name="overview_subtitle">Das ist heute in deinem Vorrat los.</string>
+    <string name="overview_empty_title">Hier ist noch Platz</string>
+    <string name="overview_empty_button">Produkt scannen</string>
+    <string name="stat_expired">Abgelaufen</string>
+    <string name="stat_soon">Bald fällig</string>
+    <string name="stat_total">Produkte</string>
+    <string name="scan_hint">Halte den Barcode in den Rahmen</string>
+    <string name="expiry_scan_button">Datum scannen</string>
+    <string name="expiry_scan_hint">Halte die Kamera auf das Ablaufdatum (MHD)</string>
+    <string name="expiry_scan_searching">Suche Datum …</string>
+    <string name="expiry_scan_detected">Erkanntes Datum</string>
+    <string name="expiry_scan_manual">Datum selbst auswählen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_undo">Rückgängig</string>
+    <string name="product_quantity">Menge</string>
+    <string name="product_deleted">„%1$s“ gelöscht</string>
+    <string name="product_deleted_to_list">„%1$s“ gelöscht und auf die Einkaufsliste gesetzt</string>
+    <string name="info_added">Hinzugefügt am</string>
+    <string name="info_barcode">Barcode</string>
+    <string name="info_add_to_list">Auf die Einkaufsliste</string>
+    <string name="info_added_to_list">„%1$s“ steht jetzt auf der Einkaufsliste</string>
+    <string name="shopping_add_hint">Artikel hinzufügen …</string>
+    <string name="shopping_check">Abhaken</string>
+    <string name="shopping_clear_done">Erledigte entfernen</string>
+    <string name="shopping_done_section">Im Korb</string>
+    <string name="shopping_empty_title">Alles da!</string>
+    <string name="shopping_progress">%1$d von %2$d erledigt</string>
+    <string name="torch_on">Taschenlampe an</string>
+    <string name="torch_off">Taschenlampe aus</string>
+    <string name="settings_section_security">Sicherheit</string>
+    <string name="settings_app_lock">App-Sperre</string>
+    <string name="state_on">An</string>
+    <string name="state_off">Aus</string>
+    <string name="lock_title">Vorratsheld ist gesperrt</string>
+    <string name="lock_enter_pin">Gib deinen PIN ein</string>
+    <string name="lock_wrong_pin">Falscher PIN</string>
+    <string name="lock_wait">Zu viele Versuche. Warte %1$d Sekunden.</string>
+    <string name="lock_forgot_pin">PIN vergessen?</string>
+    <string name="lock_forgot_text">Du wirst abgemeldet und meldest dich mit E-Mail und Passwort neu an. Die App-Sperre wird dabei ausgeschaltet.</string>
+    <string name="lock_use_pin">PIN verwenden</string>
+    <string name="lock_biometric_reason">Vorratsheld entsperren</string>
+    <string name="applock_title">App-Sperre</string>
+    <string name="applock_intro">Schütze deinen Vorrat mit einem PIN. Wenn du willst, entsperrst du stattdessen bequem mit Face ID oder Fingerabdruck.</string>
+    <string name="applock_enable">App-Sperre</string>
+    <string name="applock_enable_hint">Beim Öffnen nach PIN fragen</string>
+    <string name="applock_unlock_with">Mit %1$s entsperren</string>
+    <string name="applock_no_biometrics">Auf diesem Gerät ist keine Biometrie eingerichtet. Du entsperrst mit deinem PIN.</string>
+    <string name="applock_timeout">Sperren nach</string>
+    <string name="applock_change_pin">PIN ändern</string>
+    <string name="biometric_face_id">Face ID</string>
+    <string name="biometric_touch_id">Touch ID</string>
+    <string name="biometric_fingerprint">Fingerabdruck</string>
+    <string name="biometric_face">Gesichtserkennung</string>
+    <string name="biometric_generic">Biometrie</string>
+    <string name="timeout_immediately">Sofort</string>
+    <string name="timeout_1min">Nach 1 Minute</string>
+    <string name="timeout_5min">Nach 5 Minuten</string>
+    <string name="timeout_start">Nur beim App-Start</string>
+    <string name="pin_create">PIN festlegen</string>
+    <string name="pin_create_hint">Wähle einen 4-stelligen PIN für Vorratsheld</string>
+    <string name="pin_confirm">PIN bestätigen</string>
+    <string name="pin_confirm_hint">Gib den PIN noch einmal ein</string>
+    <string name="pin_mismatch">Die PINs stimmen nicht überein</string>
+    <string name="pin_current">Aktueller PIN</string>
+    <string name="pin_current_hint">Gib deinen aktuellen PIN ein</string>
+</resources>
