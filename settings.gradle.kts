@@ -23,5 +23,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Vorratsheld"
-include(":app")
+include(":androidApp")
+include(":shared")
  
