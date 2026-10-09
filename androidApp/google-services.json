@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "516909246785",
+    "project_id": "vorratsheld-fc695",
+    "storage_bucket": "vorratsheld-fc695.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516909246785:android:f59707d03cb402461819c0",
+        "android_client_info": {
+          "package_name": "com.Ali313.Vorratsheld_2026"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8AjWqIhVVycklrKhoCjEular2kiKdHps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516909246785:android:1be870c23f2d10701819c0",
+        "android_client_info": {
+          "package_name": "com.example.vorratsheld"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8AjWqIhVVycklrKhoCjEular2kiKdHps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
