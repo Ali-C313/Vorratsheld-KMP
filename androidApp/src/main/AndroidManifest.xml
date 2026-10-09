@@ -4,13 +4,14 @@
 
     <!-- Für Firebase (Auth/Firestore) und Retrofit-Anfragen an Open Food Facts -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Für den späteren Scan-Screen (CameraX + ML Kit) -->
+    <!-- Für den Scan-Screen (CameraX + ML Kit) -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <!-- Für Ablauf-Erinnerungen (ab Android 13 zur Laufzeit abgefragt) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".VorratsheldApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
