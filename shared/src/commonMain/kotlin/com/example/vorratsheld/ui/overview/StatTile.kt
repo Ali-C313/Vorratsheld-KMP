@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.overview
+package com.example.vorratsheld.ui.overview
 
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.vorratsheld.ui.theme.AmberDark
+import com.example.vorratsheld.ui.theme.AmberLight
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 
 // Kachel mit hochzählender Zahl
@@ -42,8 +44,8 @@ private fun StatTilePreview() {
         StatTile(
             label = "Bald",
             count = 3,
-            background = Color(0xFFFFF3CD),
-            content = Color(0xFF7A5B00),
+            background = AmberLight,
+            content = AmberDark,
             modifier = Modifier.padding(16.dp)
         )
     }
