@@ -2,7 +2,7 @@ package com.example.vorratsheld.data.repository
 
 import com.example.vorratsheld.data.model.User
 
-// Anmeldung und Konto – umgesetzt mit Firebase Auth (Impl) bzw. Testdaten (Mock)
+// Anmeldung und Konto
 interface AuthRepository {
     // null, wenn niemand eingeloggt ist
     fun getCurrentUser(): User?
