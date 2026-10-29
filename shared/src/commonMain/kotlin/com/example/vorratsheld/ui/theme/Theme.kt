@@ -50,7 +50,7 @@ private val LightColorScheme = lightColorScheme(
     onErrorContainer = md_light_onErrorContainer
 )
 
-// Eigene Markenfarben auf Android und iOS (dynamische Farben gibt es nur auf Android 12+, waren eh aus)
+// Eigene Farben auf Android und iOS, ohne dynamische Farben
 @Composable
 fun VorratsheldTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
