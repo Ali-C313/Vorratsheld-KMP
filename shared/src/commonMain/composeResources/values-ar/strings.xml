@@ -110,7 +110,7 @@
     <string name="help_error_empty">يرجى ملء الموضوع والرسالة.</string>
     <string name="help_error_send">فشل الإرسال: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">مرحبًا بعودتك! سجّل الدخول لرؤية مخزونك.</string>
     <string name="register_subtitle">أنشئ حسابك – ستكون جاهزًا خلال دقيقة.</string>
     <string name="password_show">إظهار كلمة المرور</string>
