@@ -10,13 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.ui.theme.Cream
 import com.example.vorratsheld.ui.theme.LockGradient
+import com.example.vorratsheld.ui.theme.RedSoft
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 
 // PIN-Punkte und Ziffernfeld, für den Sperrbildschirm und das Festlegen des PINs
@@ -67,7 +67,7 @@ fun PinPad(
                 Text(
                     text = errorText,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFFFB4AB),
+                    color = RedSoft,
                     textAlign = TextAlign.Center
                 )
             }
