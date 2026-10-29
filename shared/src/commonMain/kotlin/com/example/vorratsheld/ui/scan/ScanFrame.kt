@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.scan
+package com.example.vorratsheld.ui.scan
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.vorratsheld.ui.theme.Amber
 
 // Sucher-Ecken mit Scan-Linie, die hoch und runter läuft
 @Composable
@@ -37,6 +38,6 @@ fun ScanFrame(modifier: Modifier = Modifier) {
             drawLine(Color.White, p, Offset(p.x, p.y + corner * dir.y), stroke)
         }
         val y = size.height * lineY
-        drawLine(Color(0xFFE8A93C), Offset(16.dp.toPx(), y), Offset(size.width - 16.dp.toPx(), y), 3.dp.toPx())
+        drawLine(Amber, Offset(16.dp.toPx(), y), Offset(size.width - 16.dp.toPx(), y), 3.dp.toPx())
     }
 }
