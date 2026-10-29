@@ -23,7 +23,7 @@ actual fun ExpiryReminderEffect(products: List<Product>) {
         contract = ActivityResultContracts.RequestPermission()
     ) { /* Ergebnis wird nicht extra behandelt: Ohne Erlaubnis zeigt WorkManager schlicht keine Notification */ }
 
-    // Einmal pro Besuch der Übersicht: Check einplanen (KEEP verhindert doppelte Jobs) + Erlaubnis anfragen
+    // Check einplanen (KEEP verhindert doppelte Jobs) und Erlaubnis anfragen
     LaunchedEffect(Unit) {
         WorkScheduler.schedulePeriodicExpiryCheck(context)
 
