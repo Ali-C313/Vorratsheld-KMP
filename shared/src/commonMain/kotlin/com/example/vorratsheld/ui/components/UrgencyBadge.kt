@@ -8,7 +8,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.data.enums.ExpiryUrgency
@@ -17,6 +16,8 @@ import com.example.vorratsheld.resources.urgency_expired
 import com.example.vorratsheld.resources.urgency_ok
 import com.example.vorratsheld.resources.urgency_short
 import com.example.vorratsheld.resources.urgency_soon
+import com.example.vorratsheld.ui.theme.AmberDark
+import com.example.vorratsheld.ui.theme.AmberLight
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import org.jetbrains.compose.resources.stringResource
 
@@ -35,8 +36,8 @@ fun UrgencyBadge(urgency: ExpiryUrgency, modifier: Modifier = Modifier) {
             stringResource(Res.string.urgency_soon)
         )
         ExpiryUrgency.IN_KUERZE -> Triple(
-            Color(0xFFFFF3CD),
-            Color(0xFF7A5B00),
+            AmberLight,
+            AmberDark,
             stringResource(Res.string.urgency_short)
         )
         ExpiryUrgency.UNKRITISCH -> Triple(
