@@ -110,7 +110,7 @@
     <string name="help_error_empty">Uzupełnij temat i wiadomość.</string>
     <string name="help_error_send">Wysyłanie nie powiodło się: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">Witaj ponownie! Zaloguj się, aby zobaczyć swoje zapasy.</string>
     <string name="register_subtitle">Załóż konto – za minutę będziesz gotowy.</string>
     <string name="password_show">Pokaż hasło</string>
