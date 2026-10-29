@@ -110,7 +110,7 @@
     <string name="help_error_empty">Заповніть тему та повідомлення.</string>
     <string name="help_error_send">Не вдалося надіслати: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">З поверненням! Увійдіть, щоб побачити свої запаси.</string>
     <string name="register_subtitle">Створіть обліковий запис – за хвилину все готово.</string>
     <string name="password_show">Показати пароль</string>
