@@ -1,6 +1,6 @@
 package com.example.vorratsheld.data.remote
 
-// Zugangsdaten von emailjs.com (kostenlos bis 200 Mails/Monat) – siehe Anleitung im Chat
+// Zugangsdaten von emailjs.com (kostenlos bis 200 Mails im Monat)
 object EmailJsConfig {
     const val SERVICE_ID = "DEINE_SERVICE_ID"
     const val TEMPLATE_ID = "DEINE_TEMPLATE_ID"
