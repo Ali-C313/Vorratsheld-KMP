@@ -110,7 +110,7 @@
     <string name="help_error_empty">Rellena el asunto y el mensaje.</string>
     <string name="help_error_send">Error al enviar: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">¡Hola de nuevo! Inicia sesión para ver tu despensa.</string>
     <string name="register_subtitle">Crea tu cuenta: en un minuto estarás listo.</string>
     <string name="password_show">Mostrar contraseña</string>
