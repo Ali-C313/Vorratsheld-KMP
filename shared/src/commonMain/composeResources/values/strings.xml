@@ -133,7 +133,7 @@
     <string name="help_error_empty">Bitte fülle Betreff und Nachricht aus.</string>
     <string name="help_error_send">Senden fehlgeschlagen: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">Willkommen zurück! Melde dich an, um deinen Vorrat zu sehen.</string>
     <string name="register_subtitle">Leg dein Konto an – in einer Minute bist du startklar.</string>
     <string name="password_show">Passwort anzeigen</string>
