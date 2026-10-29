@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.shoppinglist
+package com.example.vorratsheld.ui.shoppinglist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -40,6 +40,7 @@ import com.example.vorratsheld.resources.action_back
 import com.example.vorratsheld.resources.shopping_clear_done
 import com.example.vorratsheld.resources.shopping_progress
 import com.example.vorratsheld.resources.shopping_title
+import com.example.vorratsheld.ui.theme.Amber
 import com.example.vorratsheld.ui.theme.Cream
 import com.example.vorratsheld.ui.theme.HeaderGreen
 import org.jetbrains.compose.resources.stringResource
@@ -96,7 +97,7 @@ fun ShoppingHeader(
                 )
                 LinearProgressIndicator(
                     progress = { progress },
-                    color = Color(0xFFE8A93C),
+                    color = Amber,
                     trackColor = Color.White.copy(alpha = 0.2f),
                     strokeCap = StrokeCap.Round,
                     modifier = Modifier
