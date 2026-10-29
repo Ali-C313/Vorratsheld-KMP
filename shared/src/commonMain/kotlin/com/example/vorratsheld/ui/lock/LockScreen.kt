@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.lock
+package com.example.vorratsheld.ui.lock
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,12 +28,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.vorratsheld.data.enums.BiometricResult
 import com.example.vorratsheld.data.enums.BiometricType
-import com.example.vorratsheld.data.settings.AppLockSettings
 import com.example.vorratsheld.platform.PlatformBackHandler
 import com.example.vorratsheld.platform.rememberBiometricAuthenticator
 import com.example.vorratsheld.resources.Res
@@ -47,29 +46,33 @@ import com.example.vorratsheld.resources.lock_use_pin
 import com.example.vorratsheld.resources.lock_wait
 import com.example.vorratsheld.resources.lock_wrong_pin
 import com.example.vorratsheld.resources.settings_logout
+import com.example.vorratsheld.ui.applock.AppLockViewModel
 import com.example.vorratsheld.ui.components.PadIconKey
 import com.example.vorratsheld.ui.components.PinPad
 import com.example.vorratsheld.ui.components.VorratsheldLogo
+import com.example.vorratsheld.ui.theme.Cream
+import com.example.vorratsheld.ui.theme.GreenDark
 import com.example.vorratsheld.ui.theme.LockGradient
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import com.example.vorratsheld.util.BiometricHelper
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 private const val ATTEMPTS_BEFORE_WAIT = 5
 
-// Liegt über der ganzen App, bis Face ID / Fingerabdruck oder der PIN stimmt
+// Liegt über der ganzen App, bis Face ID, Fingerabdruck oder der PIN stimmt
 @Composable
 fun LockScreen(
     onUnlocked: () -> Unit,
-    onForgotPin: () -> Unit
+    onForgotPin: () -> Unit,
+    viewModel: AppLockViewModel = koinViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val authenticator = rememberBiometricAuthenticator()
-    val biometricType = remember {
-        if (AppLockSettings.biometricsEnabled) authenticator.type else BiometricType.NONE
+    val biometricType = remember(uiState.biometricsEnabled) {
+        if (uiState.biometricsEnabled) authenticator.type else BiometricType.NONE
     }
     val scope = rememberCoroutineScope()
 
@@ -91,8 +94,12 @@ fun LockScreen(
         }
     }
 
-    // Face ID / Fingerabdruck gleich beim Erscheinen anbieten
     LaunchedEffect(Unit) {
+        viewModel.refresh()
+    }
+
+    // Face ID oder Fingerabdruck gleich beim Erscheinen anbieten
+    LaunchedEffect(biometricType) {
         if (biometricType != BiometricType.NONE) askBiometric()
     }
 
@@ -108,15 +115,13 @@ fun LockScreen(
     PlatformBackHandler(onBack = {})
 
     fun onDigit(digit: Char) {
-        if (checking || entered.length >= AppLockSettings.PIN_LENGTH) return
+        if (checking || entered.length >= viewModel.pinLength) return
         entered += digit
         errorText = null
-        if (entered.length == AppLockSettings.PIN_LENGTH) {
+        if (entered.length == viewModel.pinLength) {
             val pin = entered
             checking = true
-            scope.launch {
-                // Hash mit vielen Runden, deshalb nicht auf dem UI-Thread
-                val correct = withContext(Dispatchers.Default) { AppLockSettings.checkPin(pin) }
+            viewModel.checkPin(pin) { correct ->
                 checking = false
                 if (correct) {
                     onUnlocked()
@@ -135,7 +140,7 @@ fun LockScreen(
     }
 
     // Surface fängt alle Berührungen ab, darunter bleibt nichts bedienbar
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFF2F5530)) {
+    Surface(modifier = Modifier.fillMaxSize(), color = GreenDark) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -183,7 +188,7 @@ fun LockScreen(
                     onClick = { showForgotDialog = true },
                     modifier = Modifier.padding(top = 12.dp)
                 ) {
-                    Text(stringResource(Res.string.lock_forgot_pin), color = Color(0xFFFBF6EA))
+                    Text(stringResource(Res.string.lock_forgot_pin), color = Cream)
                 }
             }
         }
@@ -211,10 +216,15 @@ fun LockScreen(
     }
 }
 
+@Suppress("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
 private fun LockScreenPreview() {
     VorratsheldTheme {
-        LockScreen(onUnlocked = {}, onForgotPin = {})
+        LockScreen(
+            onUnlocked = {},
+            onForgotPin = {},
+            viewModel = remember { AppLockViewModel() }
+        )
     }
 }
