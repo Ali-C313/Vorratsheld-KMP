@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class UserProfile(
     val firstName: String = "",
     val lastName: String = "",
-    // Profilbild als Base64-JPEG (ca. 256 px) – passt kostenlos in ein Firestore-Dokument
+    // Profilbild als Base64-JPEG (ca. 256 px), passt kostenlos in ein Firestore-Dokument
     val photoBase64: String? = null
 )
