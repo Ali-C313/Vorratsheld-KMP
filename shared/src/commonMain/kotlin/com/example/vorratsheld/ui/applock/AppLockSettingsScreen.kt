@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.applock
+package com.example.vorratsheld.ui.applock
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,13 +43,13 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.vorratsheld.data.enums.BiometricResult
 import com.example.vorratsheld.data.enums.BiometricType
 import com.example.vorratsheld.data.enums.LockTimeout
 import com.example.vorratsheld.data.enums.PinFlowMode
-import com.example.vorratsheld.data.settings.AppLockSettings
 import com.example.vorratsheld.platform.rememberBiometricAuthenticator
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.action_back
@@ -65,23 +65,24 @@ import com.example.vorratsheld.resources.applock_unlock_with
 import com.example.vorratsheld.resources.lock_biometric_reason
 import com.example.vorratsheld.resources.lock_use_pin
 import com.example.vorratsheld.ui.components.SettingsItem
-import com.example.vorratsheld.ui.screens.lock.PinFlowScreen
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import com.example.vorratsheld.util.BiometricHelper
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
-// Einstellungen der App-Sperre: an/aus, Face ID / Fingerabdruck, Zeitpunkt, PIN ändern
+// Einstellungen der App-Sperre: an/aus, Face ID oder Fingerabdruck, Sperrzeit, PIN ändern
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppLockSettingsScreen(navController: NavHostController) {
+fun AppLockSettingsScreen(
+    navController: NavHostController,
+    viewModel: AppLockViewModel = koinViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val authenticator = rememberBiometricAuthenticator()
     val biometricType = remember { authenticator.type }
     val scope = rememberCoroutineScope()
 
-    var enabled by remember { mutableStateOf(AppLockSettings.enabled) }
-    var biometrics by remember { mutableStateOf(AppLockSettings.biometricsEnabled) }
-    var timeout by remember { mutableStateOf(AppLockSettings.timeout) }
     var pinFlow by remember { mutableStateOf<PinFlowMode?>(null) }
     var showTimeoutDialog by remember { mutableStateOf(false) }
 
@@ -93,24 +94,15 @@ fun AppLockSettingsScreen(navController: NavHostController) {
             mode = mode,
             onFinished = {
                 when (mode) {
-                    PinFlowMode.CREATE -> {
-                        enabled = true
-                        // Wer Face ID / Fingerabdruck hat, will es meistens auch nutzen
-                        if (biometricType != BiometricType.NONE) {
-                            AppLockSettings.biometricsEnabled = true
-                            biometrics = true
-                        }
-                    }
-                    PinFlowMode.DISABLE -> {
-                        AppLockSettings.clear()
-                        enabled = false
-                        biometrics = false
-                    }
+                    // Wer Face ID oder Fingerabdruck hat, will es meistens auch nutzen
+                    PinFlowMode.CREATE -> if (biometricType != BiometricType.NONE) viewModel.setBiometricsEnabled(true)
+                    PinFlowMode.DISABLE -> viewModel.disable()
                     PinFlowMode.CHANGE -> Unit
                 }
                 pinFlow = null
             },
-            onCancel = { pinFlow = null }
+            onCancel = { pinFlow = null },
+            viewModel = viewModel
         )
         return
     }
@@ -163,31 +155,29 @@ fun AppLockSettingsScreen(navController: NavHostController) {
                     icon = Icons.Filled.Lock,
                     title = stringResource(Res.string.applock_enable),
                     subtitle = stringResource(Res.string.applock_enable_hint),
-                    checked = enabled,
+                    checked = uiState.enabled,
                     onCheckedChange = { on -> pinFlow = if (on) PinFlowMode.CREATE else PinFlowMode.DISABLE }
                 )
             }
 
-            if (enabled) {
+            if (uiState.enabled) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     if (biometricType != BiometricType.NONE) {
                         SwitchRow(
                             icon = BiometricHelper.icon(biometricType),
                             title = stringResource(Res.string.applock_unlock_with, BiometricHelper.label(biometricType)),
                             subtitle = null,
-                            checked = biometrics,
+                            checked = uiState.biometricsEnabled,
                             onCheckedChange = { on ->
                                 if (on) {
                                     // Erst einmal bestätigen lassen, dass es wirklich klappt
                                     scope.launch {
                                         if (authenticator.authenticate(reason, usePin) == BiometricResult.SUCCESS) {
-                                            AppLockSettings.biometricsEnabled = true
-                                            biometrics = true
+                                            viewModel.setBiometricsEnabled(true)
                                         }
                                     }
                                 } else {
-                                    AppLockSettings.biometricsEnabled = false
-                                    biometrics = false
+                                    viewModel.setBiometricsEnabled(false)
                                 }
                             }
                         )
@@ -205,7 +195,7 @@ fun AppLockSettingsScreen(navController: NavHostController) {
                     SettingsItem(
                         icon = Icons.Filled.Timer,
                         title = stringResource(Res.string.applock_timeout),
-                        subtitle = timeoutLabel(timeout),
+                        subtitle = timeoutLabel(uiState.timeout),
                         onClick = { showTimeoutDialog = true }
                     )
                     HorizontalDivider()
@@ -231,17 +221,16 @@ fun AppLockSettingsScreen(navController: NavHostController) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .selectable(
-                                    selected = option == timeout,
+                                    selected = option == uiState.timeout,
                                     role = Role.RadioButton,
                                     onClick = {
-                                        AppLockSettings.timeout = option
-                                        timeout = option
+                                        viewModel.setTimeout(option)
                                         showTimeoutDialog = false
                                     }
                                 )
                                 .padding(vertical = 4.dp)
                         ) {
-                            RadioButton(selected = option == timeout, onClick = null)
+                            RadioButton(selected = option == uiState.timeout, onClick = null)
                             Text(text = timeoutLabel(option), modifier = Modifier.padding(start = 12.dp))
                         }
                     }
@@ -256,10 +245,14 @@ fun AppLockSettingsScreen(navController: NavHostController) {
     }
 }
 
+@Suppress("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
 private fun AppLockSettingsScreenPreview() {
     VorratsheldTheme {
-        AppLockSettingsScreen(navController = rememberNavController())
+        AppLockSettingsScreen(
+            navController = rememberNavController(),
+            viewModel = remember { AppLockViewModel() }
+        )
     }
 }
