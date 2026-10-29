@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.settings
+package com.example.vorratsheld.ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,12 +36,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.vorratsheld.data.enums.AppLanguage
 import com.example.vorratsheld.data.enums.LegalType
+import com.example.vorratsheld.data.repository.AuthRepositoryMock
+import com.example.vorratsheld.data.repository.ProductRepositoryMock
+import com.example.vorratsheld.data.repository.ShoppingRepositoryMock
+import com.example.vorratsheld.data.repository.UserRepositoryMock
 import com.example.vorratsheld.platform.APP_VERSION
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.action_back
 import com.example.vorratsheld.resources.action_cancel
+import com.example.vorratsheld.resources.language_system
 import com.example.vorratsheld.resources.logout_dialog_text
 import com.example.vorratsheld.resources.logout_dialog_title
 import com.example.vorratsheld.resources.settings_app_lock
@@ -58,34 +70,45 @@ import com.example.vorratsheld.resources.settings_title
 import com.example.vorratsheld.resources.settings_version
 import com.example.vorratsheld.resources.state_off
 import com.example.vorratsheld.resources.state_on
+import com.example.vorratsheld.ui.applock.AppLockViewModel
+import com.example.vorratsheld.ui.auth.AuthViewModel
 import com.example.vorratsheld.ui.components.SettingsItem
 import com.example.vorratsheld.ui.components.SettingsSectionTitle
-import com.example.vorratsheld.ui.state.ProfileUiState
+import com.example.vorratsheld.ui.editprofile.ProfileViewModel
+import com.example.vorratsheld.ui.locale.customAppLocale
+import com.example.vorratsheld.ui.navigation.Screen
+import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
-// Stateless: reine UI – dadurch previewbar
+// Einstellungen mit Profil, Sprache, App-Sperre, Hilfe und Rechtstexten
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SettingsContent(
-    profileState: ProfileUiState,
-    currentLanguage: String,
-    appLockEnabled: Boolean = false,
-    onAppLockClick: () -> Unit = {},
-    onBackClick: () -> Unit,
-    onProfileClick: () -> Unit,
-    onLanguageClick: () -> Unit,
-    onHelpClick: () -> Unit,
-    onLegalClick: (LegalType) -> Unit,
-    onLogoutConfirmed: () -> Unit
+fun SettingsScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel = koinViewModel(),
+    profileViewModel: ProfileViewModel = koinViewModel(),
+    appLockViewModel: AppLockViewModel = koinViewModel()
 ) {
+    val profileState by profileViewModel.uiState.collectAsStateWithLifecycle()
+    val appLockState by appLockViewModel.uiState.collectAsStateWithLifecycle()
     var showLogoutConfirmation by remember { mutableStateOf(false) }
+
+    // Nach "Profil bearbeiten" oder "App-Sperre" die Anzeige aktualisieren
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        profileViewModel.loadProfile()
+        appLockViewModel.refresh()
+    }
+
+    val currentLanguage = AppLanguage.entries.firstOrNull { it.code == customAppLocale }?.nativeName
+        ?: stringResource(Res.string.language_system)
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(Res.string.settings_title)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.action_back))
                     }
                 }
@@ -100,7 +123,7 @@ internal fun SettingsContent(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            ProfileCard(state = profileState, onClick = onProfileClick)
+            ProfileCard(state = profileState, onClick = { navController.navigate(Screen.EditProfile) })
 
             SettingsSectionTitle(
                 text = stringResource(Res.string.settings_section_app),
@@ -111,7 +134,7 @@ internal fun SettingsContent(
                     icon = Icons.Filled.Language,
                     title = stringResource(Res.string.settings_language),
                     subtitle = currentLanguage,
-                    onClick = onLanguageClick
+                    onClick = { navController.navigate(Screen.Language) }
                 )
             }
 
@@ -123,8 +146,8 @@ internal fun SettingsContent(
                 SettingsItem(
                     icon = Icons.Filled.Lock,
                     title = stringResource(Res.string.settings_app_lock),
-                    subtitle = stringResource(if (appLockEnabled) Res.string.state_on else Res.string.state_off),
-                    onClick = onAppLockClick
+                    subtitle = stringResource(if (appLockState.enabled) Res.string.state_on else Res.string.state_off),
+                    onClick = { navController.navigate(Screen.SecuritySettings) }
                 )
             }
 
@@ -136,25 +159,25 @@ internal fun SettingsContent(
                 SettingsItem(
                     icon = Icons.AutoMirrored.Filled.HelpOutline,
                     title = stringResource(Res.string.settings_help),
-                    onClick = onHelpClick
+                    onClick = { navController.navigate(Screen.Help) }
                 )
                 HorizontalDivider()
                 SettingsItem(
                     icon = Icons.Filled.Description,
                     title = stringResource(Res.string.settings_terms),
-                    onClick = { onLegalClick(LegalType.TERMS) }
+                    onClick = { navController.navigate(Screen.Legal(LegalType.TERMS.name)) }
                 )
                 HorizontalDivider()
                 SettingsItem(
                     icon = Icons.Filled.PrivacyTip,
                     title = stringResource(Res.string.settings_privacy),
-                    onClick = { onLegalClick(LegalType.PRIVACY) }
+                    onClick = { navController.navigate(Screen.Legal(LegalType.PRIVACY.name)) }
                 )
                 HorizontalDivider()
                 SettingsItem(
                     icon = Icons.Filled.Info,
                     title = stringResource(Res.string.settings_imprint),
-                    onClick = { onLegalClick(LegalType.IMPRINT) }
+                    onClick = { navController.navigate(Screen.Legal(LegalType.IMPRINT.name)) }
                 )
             }
 
@@ -187,7 +210,12 @@ internal fun SettingsContent(
             confirmButton = {
                 TextButton(onClick = {
                     showLogoutConfirmation = false
-                    onLogoutConfirmed()
+                    authViewModel.logout {
+                        // Backstack leeren, damit "Zurück" nicht in die App führt
+                        navController.navigate(Screen.Login) {
+                            popUpTo(Screen.Overview) { inclusive = true }
+                        }
+                    }
                 }) {
                     Text(stringResource(Res.string.settings_logout), color = MaterialTheme.colorScheme.error)
                 }
@@ -197,6 +225,23 @@ internal fun SettingsContent(
                     Text(stringResource(Res.string.action_cancel))
                 }
             }
+        )
+    }
+}
+
+// Preview mit den Mock-Repositories statt Firebase
+@Suppress("ViewModelConstructorInComposable")
+@Preview(showBackground = true)
+@Composable
+private fun SettingsScreenPreview() {
+    VorratsheldTheme {
+        SettingsScreen(
+            navController = rememberNavController(),
+            authViewModel = remember { AuthViewModel(AuthRepositoryMock(), UserRepositoryMock()) },
+            profileViewModel = remember {
+                ProfileViewModel(AuthRepositoryMock(), UserRepositoryMock(), ProductRepositoryMock(), ShoppingRepositoryMock())
+            },
+            appLockViewModel = remember { AppLockViewModel() }
         )
     }
 }
