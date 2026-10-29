@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.state
+package com.example.vorratsheld.ui.productdetail
 
 import com.example.vorratsheld.data.enums.StorageLocation
 import com.example.vorratsheld.util.DateHelper
