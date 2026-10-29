@@ -30,12 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.app_name
+import com.example.vorratsheld.ui.theme.Cream
+import com.example.vorratsheld.ui.theme.LockGradient
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -66,7 +66,7 @@ fun AuthLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    Brush.verticalGradient(listOf(Color(0xFF5E8C55), Color(0xFF2F5530)))
+                    LockGradient
                 )
                 .statusBarsPadding()
                 .padding(top = 24.dp, bottom = 56.dp),
@@ -79,7 +79,7 @@ fun AuthLayout(
                     text = stringResource(Res.string.app_name),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFFFBF6EA)
+                    color = Cream
                 )
             }
         }
