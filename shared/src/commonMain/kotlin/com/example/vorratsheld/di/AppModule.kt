@@ -16,13 +16,14 @@ import com.example.vorratsheld.data.repository.UserRepository
 import com.example.vorratsheld.data.repository.UserRepositoryImpl
 import com.example.vorratsheld.data.settings.AppSettings
 import com.example.vorratsheld.ui.locale.customAppLocale
-import com.example.vorratsheld.ui.viewmodel.AuthViewModel
-import com.example.vorratsheld.ui.viewmodel.ProductDetailViewModel
-import com.example.vorratsheld.ui.viewmodel.ProductInfoViewModel
-import com.example.vorratsheld.ui.viewmodel.ProductViewModel
-import com.example.vorratsheld.ui.viewmodel.ProfileViewModel
-import com.example.vorratsheld.ui.viewmodel.ShoppingListViewModel
-import com.example.vorratsheld.ui.viewmodel.SupportViewModel
+import com.example.vorratsheld.ui.applock.AppLockViewModel
+import com.example.vorratsheld.ui.auth.AuthViewModel
+import com.example.vorratsheld.ui.productdetail.ProductDetailViewModel
+import com.example.vorratsheld.ui.productinfo.ProductInfoViewModel
+import com.example.vorratsheld.ui.overview.ProductViewModel
+import com.example.vorratsheld.ui.editprofile.ProfileViewModel
+import com.example.vorratsheld.ui.shoppinglist.ShoppingListViewModel
+import com.example.vorratsheld.ui.help.SupportViewModel
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
@@ -35,12 +36,12 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-// Alle Abhängigkeiten der App – Repositories werden als Interface eingetragen
+// Alle Abhängigkeiten der App, Repositories werden als Interface eingetragen
 val appModule = module {
     single { Firebase.auth }
     single { Firebase.firestore }
 
-    // Open Food Facts schickt viel mehr Felder, als wir brauchen
+    // Open Food Facts schickt viel mehr Felder als gebraucht
     single {
         HttpClient {
             install(ContentNegotiation) {
@@ -66,6 +67,7 @@ val appModule = module {
     viewModelOf(::ShoppingListViewModel)
     viewModelOf(::ProfileViewModel)
     viewModelOf(::SupportViewModel)
+    viewModelOf(::AppLockViewModel)
 }
 
 // Wird einmal beim Start aufgerufen: Android in VorratsheldApp, iOS in iOSApp.swift
