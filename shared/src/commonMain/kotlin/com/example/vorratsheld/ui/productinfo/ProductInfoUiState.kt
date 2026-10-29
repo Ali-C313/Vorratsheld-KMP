@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.state
+package com.example.vorratsheld.ui.productinfo
 
 import com.example.vorratsheld.data.model.Product
 
