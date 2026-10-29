@@ -7,7 +7,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
@@ -18,28 +17,26 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.vorratsheld.data.enums.LegalType
-import com.example.vorratsheld.data.repository.AuthRepository
-import com.example.vorratsheld.data.settings.AppLockSettings
 import com.example.vorratsheld.data.settings.AppSettings
-import com.example.vorratsheld.ui.screens.applock.AppLockSettingsScreen
-import com.example.vorratsheld.ui.screens.auth.LoginScreen
-import com.example.vorratsheld.ui.screens.auth.RegisterScreen
-import com.example.vorratsheld.ui.screens.editprofile.EditProfileScreen
-import com.example.vorratsheld.ui.screens.help.HelpScreen
-import com.example.vorratsheld.ui.screens.language.LanguageScreen
-import com.example.vorratsheld.ui.screens.legal.LegalScreen
-import com.example.vorratsheld.ui.screens.lock.LockScreen
-import com.example.vorratsheld.ui.screens.onboarding.OnboardingScreen
-import com.example.vorratsheld.ui.screens.overview.OverviewScreen
-import com.example.vorratsheld.ui.screens.productdetail.ProductDetailScreen
-import com.example.vorratsheld.ui.screens.productinfo.ProductInfoScreen
-import com.example.vorratsheld.ui.screens.scan.ScanScreen
-import com.example.vorratsheld.ui.screens.settings.SettingsScreen
-import com.example.vorratsheld.ui.screens.shoppinglist.ShoppingListScreen
-import com.example.vorratsheld.ui.screens.splash.SplashScreen
+import com.example.vorratsheld.ui.applock.AppLockSettingsScreen
+import com.example.vorratsheld.ui.auth.AuthViewModel
+import com.example.vorratsheld.ui.auth.LoginScreen
+import com.example.vorratsheld.ui.auth.RegisterScreen
+import com.example.vorratsheld.ui.editprofile.EditProfileScreen
+import com.example.vorratsheld.ui.help.HelpScreen
+import com.example.vorratsheld.ui.language.LanguageScreen
+import com.example.vorratsheld.ui.legal.LegalScreen
+import com.example.vorratsheld.ui.lock.LockScreen
+import com.example.vorratsheld.ui.onboarding.OnboardingScreen
+import com.example.vorratsheld.ui.overview.OverviewScreen
+import com.example.vorratsheld.ui.productdetail.ProductDetailScreen
+import com.example.vorratsheld.ui.productinfo.ProductInfoScreen
+import com.example.vorratsheld.ui.scan.ScanScreen
+import com.example.vorratsheld.ui.settings.SettingsScreen
+import com.example.vorratsheld.ui.shoppinglist.ShoppingListScreen
+import com.example.vorratsheld.ui.splash.SplashScreen
 import com.example.vorratsheld.util.AppLock
-import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 // Splash nur einmal pro App-Start zeigen (nicht nochmal nach einem Sprachwechsel)
 private var introShownThisSession = false
@@ -49,19 +46,18 @@ private var introShownThisSession = false
 fun VorratsheldNavGraph(
     navController: NavHostController = rememberNavController()
 ) {
-    val authRepository = koinInject<AuthRepository>()
+    val authViewModel: AuthViewModel = koinViewModel()
 
-    // Nach Splash/Onboarding: eingeloggt -> Übersicht, sonst Login
+    // Nach Splash und Onboarding: eingeloggt zur Übersicht, sonst zum Login
     val afterIntro: () -> Screen = {
-        if (authRepository.getCurrentUser() != null) Screen.Overview else Screen.Login
+        if (authViewModel.isLoggedIn()) Screen.Overview else Screen.Login
     }
     val startDestination = if (introShownThisSession) afterIntro() else Screen.Splash
 
     val locked by AppLock.locked.collectAsState()
     var introDone by remember { mutableStateOf(introShownThisSession) }
-    val scope = rememberCoroutineScope()
 
-    // App im Hintergrund / wieder da – daraus entscheidet AppLock, ob gesperrt wird
+    // App geht in den Hintergrund oder kommt zurück, daraus entscheidet AppLock über die Sperre
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { AppLock.onBackground() }
     LifecycleEventEffect(Lifecycle.Event.ON_START) { AppLock.onForeground() }
 
@@ -147,13 +143,11 @@ fun VorratsheldNavGraph(
         }
 
         // Sperre erst nach dem Splash und nur, wenn jemand eingeloggt ist
-        if (locked && introDone && authRepository.getCurrentUser() != null) {
+        if (locked && introDone && authViewModel.isLoggedIn()) {
             LockScreen(
                 onUnlocked = { AppLock.unlock() },
                 onForgotPin = {
-                    scope.launch {
-                        authRepository.logout()
-                        AppLockSettings.clear()
+                    authViewModel.logout {
                         AppLock.unlock()
                         navController.navigate(Screen.Login) {
                             popUpTo(navController.graph.id) { inclusive = true }
