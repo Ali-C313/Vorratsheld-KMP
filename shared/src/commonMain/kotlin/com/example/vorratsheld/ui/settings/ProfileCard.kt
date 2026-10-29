@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.settings
+package com.example.vorratsheld.ui.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.settings_profile_incomplete
 import com.example.vorratsheld.ui.components.ProfileAvatar
-import com.example.vorratsheld.ui.state.ProfileUiState
+import com.example.vorratsheld.ui.editprofile.ProfileUiState
 import org.jetbrains.compose.resources.stringResource
 
-// Card oben: Foto, Name, E-Mail – Tippen öffnet "Profil bearbeiten"
+// Karte mit Foto, Name und E-Mail, öffnet "Profil bearbeiten"
 @Composable
 fun ProfileCard(state: ProfileUiState, onClick: () -> Unit) {
     Card(
