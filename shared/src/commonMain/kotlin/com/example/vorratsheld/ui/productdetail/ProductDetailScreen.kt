@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.productdetail
+package com.example.vorratsheld.ui.productdetail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,16 +38,26 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.vorratsheld.data.enums.StorageLocation
+import com.example.vorratsheld.data.repository.AuthRepositoryMock
+import com.example.vorratsheld.data.repository.OpenFoodFactsRepositoryMock
+import com.example.vorratsheld.data.repository.ProductRepositoryMock
+import com.example.vorratsheld.data.repository.ShoppingRepositoryMock
+import com.example.vorratsheld.data.repository.UserRepositoryMock
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.action_add
 import com.example.vorratsheld.resources.action_apply
@@ -68,35 +78,44 @@ import com.example.vorratsheld.resources.product_new_title
 import com.example.vorratsheld.resources.product_quantity
 import com.example.vorratsheld.resources.storage_fridge
 import com.example.vorratsheld.resources.storage_pantry
-import com.example.vorratsheld.ui.state.ProductDetailUiState
+import com.example.vorratsheld.ui.auth.AuthViewModel
+import com.example.vorratsheld.ui.navigation.Screen
+import com.example.vorratsheld.ui.theme.FavoriteYellow
+import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import com.example.vorratsheld.util.DateHelper
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
-// Stateless: reine UI, unabhängig vom ViewModel – dadurch previewbar
+// Produkt nach dem Scan anlegen oder ein bestehendes bearbeiten
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProductDetailContent(
-    uiState: ProductDetailUiState,
-    autoScanExpiry: Boolean = false,
-    onNameChange: (String) -> Unit,
-    onLocationChange: (StorageLocation) -> Unit,
-    onQuantityChange: (Int) -> Unit = {},
-    onExpiryDateChange: (Long) -> Unit,
-    onFavoriteToggle: () -> Unit,
-    onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
-    onDeleteConfirmed: () -> Unit
+fun ProductDetailScreen(
+    navController: NavHostController,
+    productId: String,
+    barcode: String,
+    viewModel: ProductDetailViewModel = koinViewModel(),
+    authViewModel: AuthViewModel = koinViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val currentUser by authViewModel.currentUser.collectAsStateWithLifecycle()
+
     var showDatePicker by remember { mutableStateOf(false) }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     // Nach einem Barcode-Scan direkt mit dem MHD weitermachen
-    var showExpiryScan by rememberSaveable { mutableStateOf(autoScanExpiry) }
+    var showExpiryScan by rememberSaveable { mutableStateOf(barcode.isNotEmpty()) }
+
+    LaunchedEffect(Unit) {
+        when {
+            productId.isNotEmpty() -> viewModel.loadForEdit(productId)
+            barcode.isNotEmpty() -> viewModel.loadForNewScan(barcode)
+        }
+    }
 
     if (showExpiryScan) {
         ExpiryScanOverlay(
             onDateConfirmed = { date ->
-                onExpiryDateChange(date)
+                viewModel.updateExpiryDate(date)
                 showExpiryScan = false
             },
             onManualPick = {
@@ -111,9 +130,11 @@ internal fun ProductDetailContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditMode) stringResource(Res.string.product_edit_title) else stringResource(Res.string.product_new_title)) },
+                title = {
+                    Text(stringResource(if (uiState.isEditMode) Res.string.product_edit_title else Res.string.product_new_title))
+                },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.action_back))
                     }
                 },
@@ -138,7 +159,7 @@ internal fun ProductDetailContent(
         ) {
             OutlinedTextField(
                 value = uiState.name,
-                onValueChange = onNameChange,
+                onValueChange = viewModel::updateName,
                 label = { Text(stringResource(Res.string.product_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -151,25 +172,25 @@ internal fun ProductDetailContent(
                 ) {
                     FilterChip(
                         selected = uiState.location == StorageLocation.KUEHLSCHRANK,
-                        onClick = { onLocationChange(StorageLocation.KUEHLSCHRANK) },
+                        onClick = { viewModel.updateLocation(StorageLocation.KUEHLSCHRANK) },
                         label = { Text(stringResource(Res.string.storage_fridge)) }
                     )
                     FilterChip(
                         selected = uiState.location == StorageLocation.KAMMER,
-                        onClick = { onLocationChange(StorageLocation.KAMMER) },
+                        onClick = { viewModel.updateLocation(StorageLocation.KAMMER) },
                         label = { Text(stringResource(Res.string.storage_pantry)) }
                     )
                 }
             }
 
-            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = stringResource(Res.string.product_quantity),
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.weight(1f)
                 )
                 FilledTonalIconButton(
-                    onClick = { onQuantityChange(-1) },
+                    onClick = { viewModel.changeQuantity(-1) },
                     enabled = uiState.quantity > 1
                 ) {
                     Icon(Icons.Filled.Remove, contentDescription = null)
@@ -180,7 +201,7 @@ internal fun ProductDetailContent(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
-                FilledTonalIconButton(onClick = { onQuantityChange(1) }) {
+                FilledTonalIconButton(onClick = { viewModel.changeQuantity(1) }) {
                     Icon(Icons.Filled.Add, contentDescription = null)
                 }
             }
@@ -211,14 +232,14 @@ internal fun ProductDetailContent(
             }
 
             Row(
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                IconButton(onClick = onFavoriteToggle) {
+                IconButton(onClick = viewModel::toggleFavorite) {
                     Icon(
                         imageVector = if (uiState.isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
                         contentDescription = stringResource(Res.string.favorite),
-                        tint = if (uiState.isFavorite) Color(0xFFFFA000) else MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = if (uiState.isFavorite) FavoriteYellow else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Text(
@@ -232,10 +253,14 @@ internal fun ProductDetailContent(
             }
 
             Button(
-                onClick = onSaveClick,
+                onClick = {
+                    currentUser?.let { user ->
+                        viewModel.save(user.uid) { navController.popBackStack() }
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (uiState.isEditMode) stringResource(Res.string.action_save) else stringResource(Res.string.action_add))
+                Text(stringResource(if (uiState.isEditMode) Res.string.action_save else Res.string.action_add))
             }
         }
     }
@@ -246,7 +271,7 @@ internal fun ProductDetailContent(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
-                    datePickerState.selectedDateMillis?.let { onExpiryDateChange(it) }
+                    datePickerState.selectedDateMillis?.let { viewModel.updateExpiryDate(it) }
                     showDatePicker = false
                 }) {
                     Text(stringResource(Res.string.action_apply))
@@ -270,7 +295,10 @@ internal fun ProductDetailContent(
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteConfirmation = false
-                    onDeleteConfirmed()
+                    currentUser?.let { user ->
+                        // Die Produktansicht darunter gibt es nicht mehr, deshalb bis zur Übersicht zurück
+                        viewModel.delete(user.uid) { navController.popBackStack(Screen.Overview, inclusive = false) }
+                    }
                 }) {
                     Text(stringResource(Res.string.action_delete), color = MaterialTheme.colorScheme.error)
                 }
@@ -280,6 +308,26 @@ internal fun ProductDetailContent(
                     Text(stringResource(Res.string.action_cancel))
                 }
             }
+        )
+    }
+}
+
+// Preview mit den Mock-Repositories statt Firebase
+@Suppress("ViewModelConstructorInComposable")
+@Preview(showBackground = true)
+@Composable
+private fun ProductDetailScreenPreview() {
+    VorratsheldTheme {
+        ProductDetailScreen(
+            navController = rememberNavController(),
+            productId = "1",
+            barcode = "",
+            viewModel = remember {
+                ProductDetailViewModel(ProductRepositoryMock(), OpenFoodFactsRepositoryMock(), ShoppingRepositoryMock()).apply {
+                    loadForEdit("1")
+                }
+            },
+            authViewModel = remember { AuthViewModel(AuthRepositoryMock(), UserRepositoryMock()) }
         )
     }
 }
