@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +30,7 @@ import com.example.vorratsheld.data.enums.ExpiryUrgency
 import com.example.vorratsheld.data.model.Product
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.favorite
+import com.example.vorratsheld.ui.theme.FavoriteYellow
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import com.example.vorratsheld.util.DateHelper
 import org.jetbrains.compose.resources.stringResource
@@ -121,7 +121,7 @@ fun ProductCard(
                 Icon(
                     imageVector = if (product.isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
                     contentDescription = stringResource(Res.string.favorite),
-                    tint = if (product.isFavorite) Color(0xFFFFA000) else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = if (product.isFavorite) FavoriteYellow else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
