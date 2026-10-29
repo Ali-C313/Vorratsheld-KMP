@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.viewmodel
+package com.example.vorratsheld.ui.productinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,7 +7,6 @@ import com.example.vorratsheld.data.repository.ShoppingRepository
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.error_delete_failed
 import com.example.vorratsheld.resources.error_product_not_found
-import com.example.vorratsheld.ui.state.ProductInfoUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
