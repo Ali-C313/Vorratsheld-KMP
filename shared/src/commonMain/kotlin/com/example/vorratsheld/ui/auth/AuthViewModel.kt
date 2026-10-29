@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.viewmodel
+package com.example.vorratsheld.ui.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-// Hält den Login-Zustand für die Login/Register-Screens
+// Login-Zustand, Anmelden, Registrieren und Abmelden
 class AuthViewModel(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
@@ -49,7 +49,7 @@ class AuthViewModel(
             val last = lastName.trim()
             authRepository.register(email.trim(), password, "$first $last")
                 .onSuccess { user ->
-                    // Klappt das Profil nicht, ist das Konto trotzdem angelegt – Name steht auch in Firebase Auth
+                    // Klappt das Profil nicht, ist das Konto trotzdem angelegt, Name steht auch in Firebase Auth
                     userRepository.saveProfile(user.uid, UserProfile(firstName = first, lastName = last))
                     _errorMessage.value = null
                     _currentUser.value = user
@@ -58,6 +58,9 @@ class AuthViewModel(
             _isLoading.value = false
         }
     }
+
+    // Fragt Firebase direkt, damit auch ein Login aus einem anderen Screen zählt
+    fun isLoggedIn(): Boolean = authRepository.getCurrentUser() != null
 
     fun clearError() {
         _errorMessage.value = null
