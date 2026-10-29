@@ -110,7 +110,7 @@
     <string name="help_error_empty">Please fill in subject and message.</string>
     <string name="help_error_send">Sending failed: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">Welcome back! Log in to see your pantry.</string>
     <string name="register_subtitle">Create your account – you’ll be ready in a minute.</string>
     <string name="password_show">Show password</string>
