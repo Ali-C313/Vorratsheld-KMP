@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.viewmodel
+package com.example.vorratsheld.ui.help
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,6 @@ import com.example.vorratsheld.platform.platformName
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.help_error_empty
 import com.example.vorratsheld.resources.help_error_send
-import com.example.vorratsheld.ui.state.SupportUiState
 import com.example.vorratsheld.util.DateHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
