@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.viewmodel
+package com.example.vorratsheld.ui.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
