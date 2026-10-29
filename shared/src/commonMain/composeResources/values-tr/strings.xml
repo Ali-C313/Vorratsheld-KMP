@@ -110,7 +110,7 @@
     <string name="help_error_empty">Lütfen konu ve mesajı doldur.</string>
     <string name="help_error_send">Gönderme başarısız: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">Tekrar hoş geldin! Stokunu görmek için giriş yap.</string>
     <string name="register_subtitle">Hesabını oluştur – bir dakikada hazırsın.</string>
     <string name="password_show">Şifreyi göster</string>
