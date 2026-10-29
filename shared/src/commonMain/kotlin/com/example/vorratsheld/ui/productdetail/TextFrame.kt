@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.productdetail
+package com.example.vorratsheld.ui.productdetail
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
