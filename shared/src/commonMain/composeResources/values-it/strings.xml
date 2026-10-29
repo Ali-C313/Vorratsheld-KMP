@@ -110,7 +110,7 @@
     <string name="help_error_empty">Compila oggetto e messaggio.</string>
     <string name="help_error_send">Invio non riuscito: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">Bentornato! Accedi per vedere la tua dispensa.</string>
     <string name="register_subtitle">Crea il tuo account – in un minuto sei pronto.</string>
     <string name="password_show">Mostra password</string>
