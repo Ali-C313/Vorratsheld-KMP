@@ -9,7 +9,7 @@ import com.example.vorratsheld.ui.locale.AppEnvironment
 import com.example.vorratsheld.ui.navigation.VorratsheldNavGraph
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 
-// Einstiegspunkt der UI – wird von MainActivity (Android) und MainViewController (iOS) aufgerufen
+// Einstiegspunkt der UI, wird von MainActivity (Android) und MainViewController (iOS) aufgerufen
 @Composable
 fun App() {
     // AppEnvironment ganz außen, damit ein Sprachwechsel wirklich alles neu aufbaut
