@@ -24,7 +24,7 @@ import coil3.compose.AsyncImage
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import kotlin.io.encoding.Base64
 
-// Rundes Profilbild – ohne Foto die Initialen, ohne Namen ein Personen-Icon
+// Rundes Profilbild, ohne Foto die Initialen, ohne Namen ein Personen-Icon
 @Composable
 fun ProfileAvatar(
     photoBase64: String?,
