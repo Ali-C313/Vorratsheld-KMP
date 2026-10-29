@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.help
+package com.example.vorratsheld.ui.help
 
 import com.example.vorratsheld.data.enums.SupportCategory
 import com.example.vorratsheld.resources.Res
