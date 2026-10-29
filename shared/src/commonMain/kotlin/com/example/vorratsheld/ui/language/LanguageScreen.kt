@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.language
+package com.example.vorratsheld.ui.language
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,7 +28,7 @@ import com.example.vorratsheld.ui.locale.customAppLocale
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import org.jetbrains.compose.resources.stringResource
 
-// Auswahl wird gespeichert und sofort übernommen – die ganze App baut sich in der neuen Sprache neu auf
+// Auswahl wird gespeichert und sofort übernommen, die ganze App baut sich in der neuen Sprache neu auf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LanguageScreen(navController: NavHostController) {
