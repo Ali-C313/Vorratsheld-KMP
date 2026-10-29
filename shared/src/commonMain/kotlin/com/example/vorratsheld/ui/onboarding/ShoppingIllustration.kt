@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.onboarding
+package com.example.vorratsheld.ui.onboarding
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -23,6 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import com.example.vorratsheld.ui.theme.Amber
+import com.example.vorratsheld.ui.theme.Brick
+import com.example.vorratsheld.ui.theme.Green
 
 // Seite 4: Einkaufswagen mit Stern und Haken
 @Composable
@@ -34,11 +37,11 @@ fun ShoppingIllustration() {
         animationSpec = infiniteRepeatable(tween(700, easing = LinearEasing), RepeatMode.Reverse)
     )
     Box(contentAlignment = Alignment.Center) {
-        BigIcon(Icons.Filled.ShoppingCart, Color(0xFFB8432F))
+        BigIcon(Icons.Filled.ShoppingCart, Brick)
         Icon(
             Icons.Filled.Star,
             contentDescription = null,
-            tint = Color(0xFFE8A93C),
+            tint = Amber,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .size(44.dp)
@@ -49,7 +52,7 @@ fun ShoppingIllustration() {
         )
         Surface(
             shape = CircleShape,
-            color = Color(0xFF3F6B3F),
+            color = Green,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .size(40.dp)
