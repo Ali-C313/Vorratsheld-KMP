@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.state
+package com.example.vorratsheld.ui.shoppinglist
 
 import com.example.vorratsheld.data.model.ShoppingItem
 
