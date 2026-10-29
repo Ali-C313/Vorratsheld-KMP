@@ -7,7 +7,7 @@ import com.example.vorratsheld.notification.NotificationHelper
 import com.example.vorratsheld.ui.locale.customAppLocale
 import java.util.Locale
 
-// Läuft vor allem anderen – auch vor dem WorkManager-Worker, der Koin braucht
+// Läuft vor allem anderen, auch vor dem WorkManager-Worker, der Koin braucht
 class VorratsheldApp : Application() {
     override fun onCreate() {
         super.onCreate()
