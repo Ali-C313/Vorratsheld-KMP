@@ -39,7 +39,7 @@ class ExpiryCheckWorker(
 
             Result.success()
         } catch (e: Exception) {
-            // Kurzer Netzwerkfehler o.ä. -> WorkManager versucht es beim nächsten Mal erneut
+            // Bei Netzwerkfehlern versucht es WorkManager später noch mal
             Result.retry()
         }
     }
