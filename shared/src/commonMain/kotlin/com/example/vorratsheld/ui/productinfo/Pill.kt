@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.productinfo
+package com.example.vorratsheld.ui.productinfo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
