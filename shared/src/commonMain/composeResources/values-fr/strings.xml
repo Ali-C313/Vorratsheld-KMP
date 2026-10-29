@@ -110,7 +110,7 @@
     <string name="help_error_empty">Remplis l’objet et le message.</string>
     <string name="help_error_send">Échec de l’envoi : %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">Bon retour ! Connecte-toi pour voir ton stock.</string>
     <string name="register_subtitle">Crée ton compte – tu seras prêt en une minute.</string>
     <string name="password_show">Afficher le mot de passe</string>
