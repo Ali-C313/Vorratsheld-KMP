@@ -9,7 +9,7 @@ import com.example.vorratsheld.resources.settings_privacy
 import com.example.vorratsheld.resources.settings_terms
 import org.jetbrains.compose.resources.StringResource
 
-// Welche Rechtstexte es gibt – Titel + Inhalt aus den Ressourcen
+// Welche Rechtstexte es gibt, Titel + Inhalt aus den Ressourcen
 enum class LegalType(val title: StringResource, val text: StringResource) {
     TERMS(Res.string.settings_terms, Res.string.legal_terms_text),
     PRIVACY(Res.string.settings_privacy, Res.string.legal_privacy_text),
