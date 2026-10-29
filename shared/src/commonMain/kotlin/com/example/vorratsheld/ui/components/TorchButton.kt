@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.torch_off
 import com.example.vorratsheld.resources.torch_on
+import com.example.vorratsheld.ui.theme.Gold
+import com.example.vorratsheld.ui.theme.GoldDark
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import org.jetbrains.compose.resources.stringResource
 
@@ -27,8 +29,8 @@ fun TorchButton(
     onToggle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val container by animateColorAsState(if (enabled) Color(0xFFFFC94A) else Color.Black.copy(alpha = 0.45f))
-    val content by animateColorAsState(if (enabled) Color(0xFF3A2A00) else Color.White)
+    val container by animateColorAsState(if (enabled) Gold else Color.Black.copy(alpha = 0.45f))
+    val content by animateColorAsState(if (enabled) GoldDark else Color.White)
 
     FilledTonalIconButton(
         onClick = onToggle,
