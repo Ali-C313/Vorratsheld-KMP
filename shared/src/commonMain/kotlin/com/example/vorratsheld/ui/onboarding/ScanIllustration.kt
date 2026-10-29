@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.onboarding
+package com.example.vorratsheld.ui.onboarding
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -19,6 +19,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.vorratsheld.ui.theme.Brick
 
 // Seite 1: Barcode mit wanderndem Scan-Strahl
 @Composable
@@ -59,13 +60,13 @@ fun ScanIllustration() {
         val y = size.height * scanY
         drawRect(
             brush = Brush.verticalGradient(
-                listOf(Color.Transparent, Color(0xFFB8432F).copy(alpha = 0.5f), Color.Transparent),
+                listOf(Color.Transparent, Brick.copy(alpha = 0.5f), Color.Transparent),
                 startY = y - 18.dp.toPx(),
                 endY = y + 18.dp.toPx()
             ),
             topLeft = Offset(0f, y - 18.dp.toPx()),
             size = Size(size.width, 36.dp.toPx())
         )
-        drawLine(Color(0xFFB8432F), Offset(8.dp.toPx(), y), Offset(size.width - 8.dp.toPx(), y), 3.dp.toPx())
+        drawLine(Brick, Offset(8.dp.toPx(), y), Offset(size.width - 8.dp.toPx(), y), 3.dp.toPx())
     }
 }
