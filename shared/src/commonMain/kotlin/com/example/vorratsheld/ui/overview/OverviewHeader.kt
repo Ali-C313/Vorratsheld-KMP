@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.overview
+package com.example.vorratsheld.ui.overview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.resources.Res
@@ -36,7 +35,13 @@ import com.example.vorratsheld.resources.stat_expired
 import com.example.vorratsheld.resources.stat_soon
 import com.example.vorratsheld.resources.stat_total
 import com.example.vorratsheld.ui.components.ProfileAvatar
+import com.example.vorratsheld.ui.theme.AmberDark
+import com.example.vorratsheld.ui.theme.AmberLight
+import com.example.vorratsheld.ui.theme.Cream
+import com.example.vorratsheld.ui.theme.GreenDark
 import com.example.vorratsheld.ui.theme.HeaderGreen
+import com.example.vorratsheld.ui.theme.RedDark
+import com.example.vorratsheld.ui.theme.RedLight
 import org.jetbrains.compose.resources.stringResource
 
 // Grüner Kopf: Begrüßung, Avatar, Schnellzugriffe und drei Zahlen zum Vorrat
@@ -80,12 +85,12 @@ fun OverviewHeader(
                         },
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFBF6EA)
+                        color = Cream
                     )
                     Text(
                         text = stringResource(Res.string.overview_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFFFBF6EA).copy(alpha = 0.8f)
+                        color = Cream.copy(alpha = 0.8f)
                     )
                 }
                 HeaderIconButton(Icons.Filled.ShoppingCart, stringResource(Res.string.overview_shopping_list), onShoppingListClick)
@@ -96,9 +101,9 @@ fun OverviewHeader(
             Spacer(Modifier.height(20.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatTile(stringResource(Res.string.stat_expired), expiredCount, Color(0xFFFFDAD6), Color(0xFF93000A), Modifier.weight(1f))
-                StatTile(stringResource(Res.string.stat_soon), soonCount, Color(0xFFFFF3CD), Color(0xFF7A5B00), Modifier.weight(1f))
-                StatTile(stringResource(Res.string.stat_total), totalCount, Color(0xFFFBF6EA), Color(0xFF2F5530), Modifier.weight(1f))
+                StatTile(stringResource(Res.string.stat_expired), expiredCount, RedLight, RedDark, Modifier.weight(1f))
+                StatTile(stringResource(Res.string.stat_soon), soonCount, AmberLight, AmberDark, Modifier.weight(1f))
+                StatTile(stringResource(Res.string.stat_total), totalCount, Cream, GreenDark, Modifier.weight(1f))
             }
         }
     }
