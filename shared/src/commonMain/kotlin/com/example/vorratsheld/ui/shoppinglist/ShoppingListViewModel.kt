@@ -1,10 +1,9 @@
-package com.example.vorratsheld.ui.viewmodel
+package com.example.vorratsheld.ui.shoppinglist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vorratsheld.data.model.ShoppingItem
 import com.example.vorratsheld.data.repository.ShoppingRepository
-import com.example.vorratsheld.ui.state.ShoppingListUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
