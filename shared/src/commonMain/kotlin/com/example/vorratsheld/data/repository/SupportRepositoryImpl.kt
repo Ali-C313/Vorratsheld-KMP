@@ -15,7 +15,7 @@ class SupportRepositoryImpl(
     private val requestsCollection = firestore.collection(CollectionNames.SUPPORT_REQUESTS)
 
     override suspend fun send(request: SupportRequest): Result<Unit> = runCatching {
-        // Mail ist nur ein Extra – auch wenn sie scheitert, geht die Anfrage nicht verloren
+        // Mail ist nur ein Extra, auch wenn sie scheitert, geht die Anfrage nicht verloren
         val emailSent = EmailJsConfig.isConfigured && runCatching {
             emailJsApi.send(
                 mapOf(
