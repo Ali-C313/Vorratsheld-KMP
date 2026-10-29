@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.onboarding
+package com.example.vorratsheld.ui.onboarding
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -8,7 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
+import com.example.vorratsheld.ui.theme.Terracotta
 
 // Seite 3: Glocke, die bimmelt
 @Composable
@@ -30,5 +30,5 @@ fun ReminderIllustration() {
             }
         )
     )
-    BigIcon(Icons.Filled.NotificationsActive, Color(0xFFC07A45), rotation = ring)
+    BigIcon(Icons.Filled.NotificationsActive, Terracotta, rotation = ring)
 }
