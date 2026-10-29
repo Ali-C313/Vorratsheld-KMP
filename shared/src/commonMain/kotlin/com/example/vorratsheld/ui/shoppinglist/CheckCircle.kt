@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.shoppinglist
+package com.example.vorratsheld.ui.shoppinglist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
