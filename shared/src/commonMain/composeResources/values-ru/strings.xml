@@ -110,7 +110,7 @@
     <string name="help_error_empty">Заполните тему и сообщение.</string>
     <string name="help_error_send">Не удалось отправить: %1$s</string>
 
-    <!-- Ladescreen, Onboarding, neues Design -->
+    <!-- Ladescreen, Onboarding, App-Sperre -->
     <string name="login_subtitle">С возвращением! Войдите, чтобы увидеть свои запасы.</string>
     <string name="register_subtitle">Создайте аккаунт – через минуту всё готово.</string>
     <string name="password_show">Показать пароль</string>
