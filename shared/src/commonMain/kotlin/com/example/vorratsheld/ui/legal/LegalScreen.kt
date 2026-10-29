@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.legal
+package com.example.vorratsheld.ui.legal
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
