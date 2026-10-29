@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.viewmodel
+package com.example.vorratsheld.ui.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +13,6 @@ import com.example.vorratsheld.resources.error_password_required
 import com.example.vorratsheld.resources.profile_email_verification_sent
 import com.example.vorratsheld.resources.profile_password_changed
 import com.example.vorratsheld.resources.profile_saved
-import com.example.vorratsheld.ui.state.ProfileUiState
 import kotlin.io.encoding.Base64
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -109,7 +108,7 @@ class ProfileViewModel(
 
             _uiState.value = state.copy(isSaving = true)
             try {
-                // Name zusätzlich in Firebase Auth – damit ist er auch ohne Firestore-Zugriff gespeichert
+                // Name zusätzlich in Firebase Auth, damit ist er auch ohne Firestore-Zugriff gespeichert
                 authRepository.updateDisplayName(state.fullName).getOrThrow()
                 userRepository.saveProfile(
                     user.uid,
@@ -148,7 +147,7 @@ class ProfileViewModel(
         }
     }
 
-    // Reihenfolge: Passwort prüfen -> Produkte, Einkaufsliste + Profil löschen -> Account löschen
+    // Erst Passwort prüfen, dann Produkte, Einkaufsliste und Profil löschen, zuletzt das Konto
     fun deleteAccount(currentPassword: String, onDeleted: () -> Unit) {
         val user = authRepository.getCurrentUser() ?: return
         viewModelScope.launch {
