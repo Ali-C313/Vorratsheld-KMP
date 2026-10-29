@@ -4,7 +4,7 @@ import Shared
 @main
 struct iOSApp: App {
     init() {
-        // Firebase (liest GoogleService-Info.plist) + Koin starten
+        // Firebase und Koin starten
         MainViewControllerKt.doInitIosApp()
     }
 
