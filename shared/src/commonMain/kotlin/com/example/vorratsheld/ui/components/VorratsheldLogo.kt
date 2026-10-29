@@ -15,14 +15,14 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.vorratsheld.ui.theme.LogoCapeRed
+import com.example.vorratsheld.ui.theme.Amber
+import com.example.vorratsheld.ui.theme.Brick
+import com.example.vorratsheld.ui.theme.Cream
 import com.example.vorratsheld.ui.theme.LogoCapeShadow
-import com.example.vorratsheld.ui.theme.LogoJarColor
 import com.example.vorratsheld.ui.theme.LogoLabelColor
-import com.example.vorratsheld.ui.theme.LogoLidColor
 import com.example.vorratsheld.ui.theme.LogoLidShadow
 import com.example.vorratsheld.ui.theme.LogoNeckColor
-import com.example.vorratsheld.ui.theme.LogoStarColor
+import com.example.vorratsheld.ui.theme.Terracotta
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import kotlin.math.PI
 import kotlin.math.cos
@@ -73,7 +73,7 @@ private fun DrawScope.drawCape(angle: Float) {
             cubicTo(300f, 640f, 340f, 470f, 400f, 360f)
             close()
         }
-        drawPath(cape, LogoCapeRed)
+        drawPath(cape, Brick)
 
         val shadow = Path().apply {
             moveTo(400f, 360f)
@@ -88,7 +88,7 @@ private fun DrawScope.drawCape(angle: Float) {
 
 private fun DrawScope.drawJar(lidOffset: Float) {
     // Glas
-    drawRoundRect(LogoJarColor, Offset(337f, 353f), Size(350f, 410f), CornerRadius(78f))
+    drawRoundRect(Cream, Offset(337f, 353f), Size(350f, 410f), CornerRadius(78f))
     // Glanz
     drawRoundRect(Color.White.copy(alpha = 0.75f), Offset(372f, 395f), Size(30f, 230f), CornerRadius(15f))
     // Etikett
@@ -97,7 +97,7 @@ private fun DrawScope.drawJar(lidOffset: Float) {
     drawRoundRect(LogoNeckColor, Offset(397f, 330f), Size(230f, 34f), CornerRadius(10f))
     // Deckel (kann von oben "einrasten")
     translate(top = -lidOffset) {
-        drawRoundRect(LogoLidColor, Offset(377f, 255f), Size(270f, 78f), CornerRadius(22f))
+        drawRoundRect(Terracotta, Offset(377f, 255f), Size(270f, 78f), CornerRadius(22f))
         drawRoundRect(LogoLidShadow.copy(alpha = 0.55f), Offset(377f, 303f), Size(270f, 30f), CornerRadius(12f))
     }
 }
@@ -117,7 +117,7 @@ private fun DrawScope.drawStar(starScale: Float, rotation: Float) {
     }
     rotate(rotation, pivot = center) {
         scale(starScale, starScale, pivot = center) {
-            drawPath(star, LogoStarColor)
+            drawPath(star, Amber)
         }
     }
 }
