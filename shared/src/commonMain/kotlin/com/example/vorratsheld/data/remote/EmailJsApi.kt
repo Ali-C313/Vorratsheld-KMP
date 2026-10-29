@@ -8,7 +8,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 
-// Verschickt die Support-Anfrage als Mail an dich
+// Verschickt die Support-Anfrage per Mail
 class EmailJsApi(private val client: HttpClient) {
 
     suspend fun send(params: Map<String, String>) {
