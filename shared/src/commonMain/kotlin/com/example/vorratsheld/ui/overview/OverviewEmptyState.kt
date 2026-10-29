@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.overview
+package com.example.vorratsheld.ui.overview
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
