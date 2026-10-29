@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.language
+package com.example.vorratsheld.ui.language
 
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.ListItem
