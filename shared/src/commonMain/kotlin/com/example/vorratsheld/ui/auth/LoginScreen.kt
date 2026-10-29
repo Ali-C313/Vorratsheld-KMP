@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.auth
+package com.example.vorratsheld.ui.auth
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +38,6 @@ import com.example.vorratsheld.ui.components.AuthTextField
 import com.example.vorratsheld.ui.components.PrimaryButton
 import com.example.vorratsheld.ui.navigation.Screen
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
-import com.example.vorratsheld.ui.viewmodel.AuthViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
