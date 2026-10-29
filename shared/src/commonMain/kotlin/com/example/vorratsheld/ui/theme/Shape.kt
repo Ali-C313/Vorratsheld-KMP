@@ -4,7 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
-// Etwas großzügigere Rundungen als das Material3-Standardschema – wirkt weicher/moderner
+// Etwas rundere Ecken als der Material-Standard
 val Shapes = Shapes(
     extraSmall = RoundedCornerShape(6.dp),
     small = RoundedCornerShape(10.dp),
