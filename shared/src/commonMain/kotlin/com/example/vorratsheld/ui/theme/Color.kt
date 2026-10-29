@@ -3,8 +3,7 @@ package com.example.vorratsheld.ui.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// Helles Farbschema: frisches Salbeigrün + warme Terrakotta-Akzente
-// (passt zum Thema "Vorrat/Küche", statt der Standard-Lila-Palette)
+// Helles Farbschema: Salbeigrün mit Terrakotta
 val md_light_primary = Color(0xFF3F6B3F)
 val md_light_onPrimary = Color(0xFFFFFFFF)
 val md_light_primaryContainer = Color(0xFFC0EFB4)
@@ -29,7 +28,7 @@ val md_light_error = Color(0xFFBA1A1A)
 val md_light_errorContainer = Color(0xFFFFDAD6)
 val md_light_onErrorContainer = Color(0xFF410002)
 
-// Dunkles Farbschema: gleiche Farbfamilie, invertierte Tonwerte
+// Dunkles Farbschema in denselben Farben
 val md_dark_primary = Color(0xFFA5D395)
 val md_dark_onPrimary = Color(0xFF0F3D0F)
 val md_dark_primaryContainer = Color(0xFF255128)
@@ -53,23 +52,32 @@ val md_dark_outlineVariant = Color(0xFF44483E)
 val md_dark_error = Color(0xFFFFB4AB)
 val md_dark_errorContainer = Color(0xFF93000A)
 val md_dark_onErrorContainer = Color(0xFFFFDAD6)
-// App-Farben außerhalb des Material-Schemas (Kopfbereiche, Sperrbildschirm, Splash)
+
+// App-Farben außerhalb des Material-Schemas
 val Cream = Color(0xFFFBF6EA)
+val Green = Color(0xFF3F6B3F)
 val GreenLight = Color(0xFF5E8C55)
 val GreenDark = Color(0xFF2F5530)
+val Petrol = Color(0xFF3A6470)
+val Terracotta = Color(0xFFC07A45)
+val Brick = Color(0xFFB8432F)
+val Amber = Color(0xFFE8A93C)
+val AmberLight = Color(0xFFFFF3CD)
+val AmberDark = Color(0xFF7A5B00)
+val Gold = Color(0xFFFFC94A)
+val GoldDark = Color(0xFF3A2A00)
+val FavoriteYellow = Color(0xFFFFA000)
+val Red = Color(0xFFBA1A1A)
+val RedLight = Color(0xFFFFDAD6)
+val RedDark = Color(0xFF93000A)
+val RedSoft = Color(0xFFFFB4AB)
+
+// Verlauf für die grünen Kopfbereiche und den Sperrbildschirm
 val HeaderGreen = listOf(GreenLight, GreenDark)
 val LockGradient = Brush.verticalGradient(HeaderGreen)
 
-val SplashGreenLight = Color(0xFF5E8C55)
-val SplashGreen = Color(0xFF3F6B3F)
-val SplashGreenDark = Color(0xFF2A4A2B)
-
 // Farben des App-Logos
-val LogoCapeRed = Color(0xFFB8432F)
 val LogoCapeShadow = Color(0xFF8F3122)
-val LogoLidColor = Color(0xFFC07A45)
 val LogoLidShadow = Color(0xFF8B5E34)
 val LogoNeckColor = Color(0xFFEADFC8)
-val LogoJarColor = Color(0xFFFBF6EA)
 val LogoLabelColor = Color(0xFFE3EFD9)
-val LogoStarColor = Color(0xFFE8A93C)
