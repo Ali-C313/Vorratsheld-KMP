@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-// Merkt sich, ob die App gerade gesperrt ist – beim Start gesperrt, wenn die Sperre an ist
+// Merkt sich, ob die App gerade gesperrt ist, beim Start gesperrt, wenn die Sperre an ist
 object AppLock {
     private val _locked = MutableStateFlow(AppLockSettings.enabled)
     val locked: StateFlow<Boolean> = _locked.asStateFlow()
