@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.lock
+package com.example.vorratsheld.ui.applock
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,16 +19,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.data.enums.PinFlowMode
 import com.example.vorratsheld.data.enums.PinStep
-import com.example.vorratsheld.data.settings.AppLockSettings
 import com.example.vorratsheld.platform.PlatformBackHandler
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.action_cancel
@@ -41,19 +38,20 @@ import com.example.vorratsheld.resources.pin_current
 import com.example.vorratsheld.resources.pin_current_hint
 import com.example.vorratsheld.resources.pin_mismatch
 import com.example.vorratsheld.ui.components.PinPad
+import com.example.vorratsheld.ui.theme.Cream
+import com.example.vorratsheld.ui.theme.GreenDark
 import com.example.vorratsheld.ui.theme.LockGradient
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
-// PIN festlegen, ändern oder zum Ausschalten bestätigen – Vollbild im Look des Sperrbildschirms
+// PIN festlegen, ändern oder zum Ausschalten bestätigen, Vollbild im Look des Sperrbildschirms
 @Composable
 fun PinFlowScreen(
     mode: PinFlowMode,
     onFinished: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    viewModel: AppLockViewModel = koinViewModel()
 ) {
     var step by remember { mutableStateOf(if (mode == PinFlowMode.CREATE) PinStep.NEW else PinStep.VERIFY) }
     var entered by remember { mutableStateOf("") }
@@ -61,7 +59,6 @@ fun PinFlowScreen(
     var errorText by remember { mutableStateOf<String?>(null) }
     var shakeTrigger by remember { mutableIntStateOf(0) }
     var busy by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
 
     val wrongPin = stringResource(Res.string.lock_wrong_pin)
     val mismatch = stringResource(Res.string.pin_mismatch)
@@ -78,8 +75,7 @@ fun PinFlowScreen(
         when (step) {
             PinStep.VERIFY -> {
                 busy = true
-                scope.launch {
-                    val correct = withContext(Dispatchers.Default) { AppLockSettings.checkPin(pin) }
+                viewModel.checkPin(pin) { correct ->
                     busy = false
                     when {
                         !correct -> fail(wrongPin)
@@ -102,8 +98,7 @@ fun PinFlowScreen(
                     fail(mismatch)
                 } else {
                     busy = true
-                    scope.launch {
-                        withContext(Dispatchers.Default) { AppLockSettings.setPin(pin) }
+                    viewModel.setPin(pin) {
                         busy = false
                         onFinished()
                     }
@@ -118,7 +113,7 @@ fun PinFlowScreen(
         PinStep.CONFIRM -> stringResource(Res.string.pin_confirm) to stringResource(Res.string.pin_confirm_hint)
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFF2F5530)) {
+    Surface(modifier = Modifier.fillMaxSize(), color = GreenDark) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -130,7 +125,7 @@ fun PinFlowScreen(
                     .statusBarsPadding()
                     .padding(8.dp)
             ) {
-                Icon(Icons.Filled.Close, contentDescription = stringResource(Res.string.action_cancel), tint = Color(0xFFFBF6EA))
+                Icon(Icons.Filled.Close, contentDescription = stringResource(Res.string.action_cancel), tint = Cream)
             }
 
             Column(
@@ -147,10 +142,10 @@ fun PinFlowScreen(
                     subtitle = subtitle,
                     entered = entered,
                     onDigit = { digit ->
-                        if (!busy && entered.length < AppLockSettings.PIN_LENGTH) {
+                        if (!busy && entered.length < viewModel.pinLength) {
                             entered += digit
                             errorText = null
-                            if (entered.length == AppLockSettings.PIN_LENGTH) onComplete(entered)
+                            if (entered.length == viewModel.pinLength) onComplete(entered)
                         }
                     },
                     onDelete = {
@@ -166,10 +161,16 @@ fun PinFlowScreen(
     }
 }
 
+@Suppress("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
 private fun PinFlowScreenPreview() {
     VorratsheldTheme {
-        PinFlowScreen(mode = PinFlowMode.CREATE, onFinished = {}, onCancel = {})
+        PinFlowScreen(
+            mode = PinFlowMode.CREATE,
+            onFinished = {},
+            onCancel = {},
+            viewModel = remember { AppLockViewModel() }
+        )
     }
 }
