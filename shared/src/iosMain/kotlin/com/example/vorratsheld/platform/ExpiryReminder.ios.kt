@@ -49,7 +49,7 @@ private fun scheduleReminders(
     val today = DateHelper.today()
     products.forEach { product ->
         val reminderDay = DateHelper.expiryDateToLocalDate(product.expiryDate).minus(3, DateTimeUnit.DAY)
-        // Schon innerhalb der 3 Tage -> sieht man eh in der App
+        // Schon innerhalb der 3 Tage, das sieht man in der App
         if (reminderDay <= today) return@forEach
 
         // title/body sind in Kotlin nur lesbar (kommen aus UNNotificationContent), daher die Setter
