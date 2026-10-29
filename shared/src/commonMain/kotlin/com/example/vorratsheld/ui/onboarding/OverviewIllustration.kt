@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.onboarding
+package com.example.vorratsheld.ui.onboarding
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -30,12 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.storage_fridge
 import com.example.vorratsheld.resources.storage_pantry
+import com.example.vorratsheld.ui.theme.Amber
+import com.example.vorratsheld.ui.theme.Green
+import com.example.vorratsheld.ui.theme.Red
 import org.jetbrains.compose.resources.stringResource
 
 // Seite 2: kleine Produktkarten mit Ablauf-Farben, die nacheinander reinschweben
@@ -48,9 +50,9 @@ fun OverviewIllustration() {
         animationSpec = infiniteRepeatable(tween(1600, easing = FastOutSlowInEasing), RepeatMode.Reverse)
     )
     val items = listOf(
-        Triple(stringResource(Res.string.storage_fridge), Color(0xFFBA1A1A), 0.45f),
-        Triple(stringResource(Res.string.storage_pantry), Color(0xFFE8A93C), 0.7f),
-        Triple(stringResource(Res.string.storage_fridge), Color(0xFF3F6B3F), 0.9f)
+        Triple(stringResource(Res.string.storage_fridge), Red, 0.45f),
+        Triple(stringResource(Res.string.storage_pantry), Amber, 0.7f),
+        Triple(stringResource(Res.string.storage_fridge), Green, 0.9f)
     )
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items.forEachIndexed { index, (label, color, fill) ->
