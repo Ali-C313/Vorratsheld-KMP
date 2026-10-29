@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.shoppinglist
+package com.example.vorratsheld.ui.shoppinglist
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
