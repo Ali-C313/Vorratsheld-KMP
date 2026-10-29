@@ -10,11 +10,11 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 
-// Datum und Ablauf rund ums MHD – gemeinsam für Android und iOS
+// Datum und Ablauf rund ums MHD
 object DateHelper {
     private const val DAY_MS = 24L * 60 * 60 * 1000
 
-    // Aktuelle Zeit in ms – ersetzt System.currentTimeMillis(), das es auf iOS nicht gibt
+    // Aktuelle Zeit in ms, System.currentTimeMillis() gibt es auf iOS nicht
     @OptIn(ExperimentalTime::class)
     fun nowMillis(): Long = Clock.System.now().toEpochMilliseconds()
 
@@ -40,7 +40,7 @@ object DateHelper {
         }
     }
 
-    // z. B. 04.10.2026 – ersetzt SimpleDateFormat
+    // z. B. 04.10.2026
     fun formatDate(dateMillis: Long): String {
         val date = expiryDateToLocalDate(dateMillis)
         val day = date.day.toString().padStart(2, '0')
