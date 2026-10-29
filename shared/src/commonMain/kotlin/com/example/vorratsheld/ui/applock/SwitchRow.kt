@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.applock
+package com.example.vorratsheld.ui.applock
 
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Icon
