@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.applock
+package com.example.vorratsheld.ui.applock
 
 import androidx.compose.runtime.Composable
 import com.example.vorratsheld.data.enums.LockTimeout
