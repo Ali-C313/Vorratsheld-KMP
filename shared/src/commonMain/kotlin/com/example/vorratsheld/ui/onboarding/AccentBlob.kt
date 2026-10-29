@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.onboarding
+package com.example.vorratsheld.ui.onboarding
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
