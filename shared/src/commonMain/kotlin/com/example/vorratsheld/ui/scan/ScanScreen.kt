@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.scan
+package com.example.vorratsheld.ui.scan
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,7 +35,7 @@ import com.example.vorratsheld.ui.navigation.Screen
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import org.jetbrains.compose.resources.stringResource
 
-// Kamera + Erkennung sind plattformspezifisch (Android: CameraX/ML Kit, iOS: AVFoundation),
+// Kamera und Erkennung kommen von der Plattform (Android: CameraX/ML Kit, iOS: AVFoundation),
 // Sucher-Rahmen, Hinweis und Zurück-Button liegen für beide gleich darüber
 @Composable
 fun ScanScreen(navController: NavHostController) {
