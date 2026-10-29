@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.onboarding
+package com.example.vorratsheld.ui.onboarding
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
@@ -36,7 +36,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,18 +53,22 @@ import com.example.vorratsheld.resources.onboarding_4_title
 import com.example.vorratsheld.resources.onboarding_next
 import com.example.vorratsheld.resources.onboarding_skip
 import com.example.vorratsheld.resources.onboarding_start
+import com.example.vorratsheld.ui.theme.Brick
+import com.example.vorratsheld.ui.theme.Green
+import com.example.vorratsheld.ui.theme.Petrol
+import com.example.vorratsheld.ui.theme.Terracotta
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 private val pages = listOf(
-    OnboardingPage(Res.string.onboarding_1_title, Res.string.onboarding_1_text, Color(0xFF3F6B3F)),
-    OnboardingPage(Res.string.onboarding_2_title, Res.string.onboarding_2_text, Color(0xFF3A6470)),
-    OnboardingPage(Res.string.onboarding_3_title, Res.string.onboarding_3_text, Color(0xFFC07A45)),
-    OnboardingPage(Res.string.onboarding_4_title, Res.string.onboarding_4_text, Color(0xFFB8432F))
+    OnboardingPage(Res.string.onboarding_1_title, Res.string.onboarding_1_text, Green),
+    OnboardingPage(Res.string.onboarding_2_title, Res.string.onboarding_2_text, Petrol),
+    OnboardingPage(Res.string.onboarding_3_title, Res.string.onboarding_3_text, Terracotta),
+    OnboardingPage(Res.string.onboarding_4_title, Res.string.onboarding_4_text, Brick)
 )
 
-/** Wird nur beim ersten Start gezeigt – [onFinished] speichert das und geht weiter. */
+// Nur beim ersten Start, onFinished speichert das und geht weiter
 @Composable
 fun OnboardingScreen(onFinished: () -> Unit) {
     val pagerState = rememberPagerState(pageCount = { pages.size })
