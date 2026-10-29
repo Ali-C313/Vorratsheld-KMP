@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.state
+package com.example.vorratsheld.ui.editprofile
 
 // Zustand für Einstellungen (Profil-Card) und "Profil bearbeiten"
 data class ProfileUiState(
