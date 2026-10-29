@@ -2,7 +2,7 @@ package com.example.vorratsheld.ui.navigation
 
 import kotlinx.serialization.Serializable
 
-// Alle Navigationsziele der App – typsicher statt String-Routen (funktioniert auf Android und iOS)
+// Alle Navigationsziele der App, typsicher statt String-Routen
 @Serializable
 sealed interface Screen {
     @Serializable
