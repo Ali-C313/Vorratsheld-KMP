@@ -4,7 +4,7 @@ import com.example.vorratsheld.data.model.UserProfile
 import com.example.vorratsheld.data.remote.CollectionNames
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 
-// Dokument-ID = uid
+// Profile in der Firestore-Collection "users", Dokument-ID ist die uid
 class UserRepositoryImpl(
     firestore: FirebaseFirestore
 ) : UserRepository {
