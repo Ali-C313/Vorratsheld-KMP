@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.help
+package com.example.vorratsheld.ui.help
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,12 +33,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.vorratsheld.data.enums.SupportCategory
+import com.example.vorratsheld.data.repository.AuthRepositoryMock
+import com.example.vorratsheld.data.repository.SupportRepositoryMock
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.action_back
 import com.example.vorratsheld.resources.help_category
@@ -49,28 +56,24 @@ import com.example.vorratsheld.resources.help_send
 import com.example.vorratsheld.resources.help_sent
 import com.example.vorratsheld.resources.help_subject
 import com.example.vorratsheld.resources.help_title
-import com.example.vorratsheld.ui.state.SupportUiState
+import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
-// Hilfe-Formular: Kategorie, Betreff, Nachricht, Antwort-Adresse
+// Hilfe-Formular: Kategorie, Betreff, Nachricht und Antwort-Adresse
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun HelpContent(
-    uiState: SupportUiState,
-    onBackClick: () -> Unit,
-    onCategoryChange: (SupportCategory) -> Unit,
-    onSubjectChange: (String) -> Unit,
-    onMessageChange: (String) -> Unit,
-    onReplyEmailChange: (String) -> Unit,
-    onSend: () -> Unit,
-    onErrorShown: () -> Unit
+fun HelpScreen(
+    navController: NavHostController,
+    viewModel: SupportViewModel = koinViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let {
             snackbarHostState.showSnackbar(it)
-            onErrorShown()
+            viewModel.clearError()
         }
     }
 
@@ -79,7 +82,7 @@ internal fun HelpContent(
             TopAppBar(
                 title = { Text(stringResource(Res.string.help_title)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.action_back))
                     }
                 }
@@ -96,7 +99,7 @@ internal fun HelpContent(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Nach dem Absenden kurze Bestätigung über dem (wieder leeren) Formular
+            // Nach dem Absenden kurze Bestätigung über dem leeren Formular
             if (uiState.isSent) {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
@@ -122,7 +125,7 @@ internal fun HelpContent(
                 SupportCategory.entries.forEach { category ->
                     FilterChip(
                         selected = uiState.category == category,
-                        onClick = { onCategoryChange(category) },
+                        onClick = { viewModel.updateCategory(category) },
                         label = { Text(stringResource(category.label)) }
                     )
                 }
@@ -130,21 +133,21 @@ internal fun HelpContent(
 
             OutlinedTextField(
                 value = uiState.subject,
-                onValueChange = onSubjectChange,
+                onValueChange = viewModel::updateSubject,
                 label = { Text(stringResource(Res.string.help_subject)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = uiState.message,
-                onValueChange = onMessageChange,
+                onValueChange = viewModel::updateMessage,
                 label = { Text(stringResource(Res.string.help_message)) },
                 minLines = 6,
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = uiState.replyEmail,
-                onValueChange = onReplyEmailChange,
+                onValueChange = viewModel::updateReplyEmail,
                 label = { Text(stringResource(Res.string.help_reply_email)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -152,7 +155,7 @@ internal fun HelpContent(
             )
 
             Button(
-                onClick = onSend,
+                onClick = viewModel::send,
                 enabled = !uiState.isSending,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -163,5 +166,18 @@ internal fun HelpContent(
                 }
             }
         }
+    }
+}
+
+// Preview mit den Mock-Repositories statt Firebase
+@Suppress("ViewModelConstructorInComposable")
+@Preview(showBackground = true)
+@Composable
+private fun HelpScreenPreview() {
+    VorratsheldTheme {
+        HelpScreen(
+            navController = rememberNavController(),
+            viewModel = remember { SupportViewModel(AuthRepositoryMock(), SupportRepositoryMock()) }
+        )
     }
 }
