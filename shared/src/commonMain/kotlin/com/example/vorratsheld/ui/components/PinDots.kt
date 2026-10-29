@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.vorratsheld.data.settings.AppLockSettings
 import com.example.vorratsheld.ui.theme.Cream
+import com.example.vorratsheld.ui.theme.RedSoft
 
 // Punkte für die eingegebenen PIN-Ziffern, wackeln bei falschem PIN
 @Composable
@@ -45,7 +46,7 @@ fun PinDots(filled: Int, isError: Boolean, shakeTrigger: Int, modifier: Modifier
             val isFilled = index < filled
             val color by animateColorAsState(
                 when {
-                    isError -> Color(0xFFFFB4AB)
+                    isError -> RedSoft
                     isFilled -> Cream
                     else -> Color.Transparent
                 }
@@ -56,7 +57,7 @@ fun PinDots(filled: Int, isError: Boolean, shakeTrigger: Int, modifier: Modifier
                     .size(16.dp)
                     .scale(scale)
                     .background(color, CircleShape)
-                    .border(2.dp, if (isError) Color(0xFFFFB4AB) else Cream, CircleShape)
+                    .border(2.dp, if (isError) RedSoft else Cream, CircleShape)
             )
         }
     }
