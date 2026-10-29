@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.state
+package com.example.vorratsheld.ui.help
 
 import com.example.vorratsheld.data.enums.SupportCategory
 
