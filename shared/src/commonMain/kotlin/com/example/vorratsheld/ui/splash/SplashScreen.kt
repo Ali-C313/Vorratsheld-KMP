@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.splash
+package com.example.vorratsheld.ui.splash
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -42,10 +41,11 @@ import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.app_name
 import com.example.vorratsheld.resources.splash_tagline
 import com.example.vorratsheld.ui.components.VorratsheldLogo
+import com.example.vorratsheld.ui.theme.Amber
 import com.example.vorratsheld.ui.theme.Cream
-import com.example.vorratsheld.ui.theme.SplashGreen
-import com.example.vorratsheld.ui.theme.SplashGreenDark
-import com.example.vorratsheld.ui.theme.SplashGreenLight
+import com.example.vorratsheld.ui.theme.Green
+import com.example.vorratsheld.ui.theme.GreenDark
+import com.example.vorratsheld.ui.theme.GreenLight
 import com.example.vorratsheld.ui.theme.VorratsheldTheme
 import kotlin.math.sin
 import kotlinx.coroutines.async
@@ -122,7 +122,7 @@ fun SplashScreen(onFinished: () -> Unit) {
             .fillMaxSize()
             .background(
                 Brush.radialGradient(
-                    colors = listOf(SplashGreenLight, SplashGreen, SplashGreenDark),
+                    colors = listOf(GreenLight, Green, GreenDark),
                     radius = 1400f
                 )
             ),
@@ -152,7 +152,7 @@ fun SplashScreen(onFinished: () -> Unit) {
                             val r = maxRadius * 0.78f
                             val twinkle = (sin(sparkle * 2 + i) + 1f) / 2f
                             drawCircle(
-                                color = Color(0xFFE8A93C).copy(alpha = 0.3f + 0.7f * twinkle),
+                                color = Amber.copy(alpha = 0.3f + 0.7f * twinkle),
                                 radius = (2.5f + 3f * twinkle).dp.toPx(),
                                 center = Offset(
                                     center.x + r * kotlin.math.cos(angle),
