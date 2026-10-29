@@ -1,4 +1,4 @@
-package com.example.vorratsheld.ui.screens.productinfo
+package com.example.vorratsheld.ui.productinfo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,6 +28,8 @@ import com.example.vorratsheld.data.model.Product
 import com.example.vorratsheld.resources.Res
 import com.example.vorratsheld.resources.action_back
 import com.example.vorratsheld.resources.favorite
+import com.example.vorratsheld.ui.theme.Cream
+import com.example.vorratsheld.ui.theme.Gold
 import com.example.vorratsheld.ui.theme.HeaderGreen
 import org.jetbrains.compose.resources.stringResource
 
@@ -57,7 +59,7 @@ fun InfoHeader(product: Product, onBackClick: () -> Unit, onFavoriteToggle: () -
             Icon(
                 Icons.Outlined.Inventory2,
                 contentDescription = null,
-                tint = Color(0xFFFBF6EA).copy(alpha = 0.9f),
+                tint = Cream.copy(alpha = 0.9f),
                 modifier = Modifier
                     .align(Alignment.Center)
                     .size(96.dp)
@@ -76,7 +78,7 @@ fun InfoHeader(product: Product, onBackClick: () -> Unit, onFavoriteToggle: () -
                 icon = if (product.isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
                 description = stringResource(Res.string.favorite),
                 onClick = onFavoriteToggle,
-                tint = if (product.isFavorite) Color(0xFFFFC94A) else Color.White
+                tint = if (product.isFavorite) Gold else Color.White
             )
         }
     }
